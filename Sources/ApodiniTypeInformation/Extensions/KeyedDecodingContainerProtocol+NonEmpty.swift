@@ -8,18 +8,6 @@
 
 import Foundation
 
-extension Decodable {
-    /// Initializes self from data
-    static func decode(from data: Data) throws -> Self {
-        try JSONDecoder().decode(Self.self, from: data)
-    }
-
-    /// Initializes self from string
-    static func decode(from string: String) throws -> Self {
-        try decode(from: string.data())
-    }
-}
-
 // MARK: - KeyedDecodingContainerProtocol
 extension KeyedDecodingContainerProtocol {
     /// Decodes a value of the given collection type for the given key, if present, otherwise initializes it as empty collection

@@ -8,7 +8,6 @@
 
 import XCTest
 @testable import ApodiniTypeInformation
-// @testable import Runtime TODO remove?
 
 final class InstanceCreatorTests: TypeInformationTestCase {
     struct Student: Codable, Equatable {
@@ -43,19 +42,19 @@ final class InstanceCreatorTests: TypeInformationTestCase {
     
     func testNonFluentModel() throws {
         let student = try typedInstance(Student.self)
-        
-        let studentJSON = student.json()
-        
-        let studentFromJSON = try Student.decode(from: studentJSON)
+
+        let studentJSON = try student.toJSON()
+
+        let studentFromJSON = try Student.fromJSON(studentJSON)
         XCTAssert(student == studentFromJSON)
     }
 
     func testInstanceCreation() throws {
         let student = try typedInstance(TestTypes.Student.self)
 
-        let studentJSON = try JSONEncoder().encode(student)
+        let studentJSON = try student.toJSON()
 
-        let studentFromJSON = try TestTypes.Student.decode(from: studentJSON)
+        let studentFromJSON = try TestTypes.Student.fromJSON(studentJSON)
         XCTAssertEqual(student, studentFromJSON)
     }
     

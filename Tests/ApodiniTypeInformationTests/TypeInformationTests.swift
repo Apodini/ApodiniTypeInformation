@@ -27,9 +27,9 @@ final class TypeInformationTests: TypeInformationTestCase {
         XCTAssert(user.dictionaryKey == nil)
         XCTAssert(user.dictionaryValue == nil)
         XCTAssertEqual(user.nestedTypeString, "\(TestTypes.self)User")
-        XCTAssertEqual(user.nestedTypeString.without("\(TestTypes.self)"), "User")
+        XCTAssertEqual(user.nestedTypeString.replacingOccurrences(of: "\(TestTypes.self)", with: ""), "User")
         XCTAssertEqual(user.typeName.absoluteName, "ApodiniTypeInformationTests/TestTypesUser")
-        XCTAssertEqual(user.property("otherCars")?.type.nestedTypeString.without("\(TestTypes.self)"), "Car")
+        XCTAssertEqual(user.property("otherCars")?.type.nestedTypeString.replacingOccurrences(of: "\(TestTypes.self)", with: ""), "Car")
         XCTAssert(user.property("url")?.type.objectProperties.isEmpty == true)
         XCTAssert(user.enumCases.isEmpty)
         XCTAssert(user.rawValueType == nil)
@@ -58,11 +58,9 @@ final class TypeInformationTests: TypeInformationTestCase {
         XCTAssert(direction.isContained(in: user))
         
         XCTAssert(!user.sameType(with: direction))
-        XCTAssertEqual(user.description, user.debugDescription)
-        
-        let data = user.description.data()
-        
-        let userFromData = try TypeInformation.decode(from: data)
+
+        let data = try user.toJSON()
+        let userFromData = try TypeInformation.fromJSON(data)
         XCTAssertEqual(user, userFromData)
         
         let userReference = user.asReference()
@@ -80,9 +78,9 @@ final class TypeInformationTests: TypeInformationTestCase {
         XCTAssertEqual(int, .scalar(.int))
         XCTAssertEqual(arrayInt, .repeated(element: int))
         XCTAssertEqual(bool, .scalar(.bool))
-        
-        let nonValidScalar = TypeInformation.scalar(.bool).json().with("", insteadOf: "Bool")
-        XCTAssertThrows(try TypeInformation.decode(from: nonValidScalar))
+
+        let nonValidScalar = try TypeInformation.scalar(.bool).toJSON().string().replacingOccurrences(of: "Bool", with: "")
+        XCTAssertThrows(try TypeInformation.fromJSON(nonValidScalar.data()))
         
         let null = try XCTUnwrap(PrimitiveType(Null.self))
         XCTAssert(null.debugDescription == "\(null.swiftType)")

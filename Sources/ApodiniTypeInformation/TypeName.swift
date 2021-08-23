@@ -43,7 +43,11 @@ public struct TypeName: TypeInformationElement {
     /// Initializes `self` with `name` and `definedIn`.
     /// - Note: `genericTypeNames` are initialized from `name`, if it is a string of e.g. the form: `Container<Int, String>` -> `[Int, String]`
     public init(name: String, definedIn: String) {
-        self.name = name.with("Of", insteadOf: "<").with("And", insteadOf: ", ").without(">")
+        self.name = name
+            .replacingOccurrences(of: "<", with: "Of")
+            .replacingOccurrences(of: ", ", with: "And")
+            .replacingOccurrences(of: ">", with: "")
+
         self.definedIn = definedIn
         if let openingBrackedIndex = name.firstIndex(of: "<"), let closingBracketIndex = name.firstIndex(of: ">") {
             genericTypeNames = String(name[name.index(after: openingBrackedIndex) ..< closingBracketIndex]).split(string: ", ")

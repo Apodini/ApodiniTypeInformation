@@ -8,23 +8,6 @@
 
 import Foundation
 
-// MARK: - Encodable extensions
-extension Encodable {
-    /// JSON String of this encodable
-    /// - Parameters:
-    ///     - outputFormatting: Output formatting of the `JSONEncoder`
-    func json(outputFormatting: JSONEncoder.OutputFormatting = [.withoutEscapingSlashes, .prettyPrinted]) -> String {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = outputFormatting
-
-        do {
-            return String(decoding: try encoder.encode(self), as: UTF8.self)
-        } catch {
-            return "JSON FAILED: \(error)"
-        }
-    }
-}
-
 // MARK: - KeyedEncodingContainerProtocol
 extension KeyedEncodingContainerProtocol {
     /// Only encodes the value if the collection is not empty

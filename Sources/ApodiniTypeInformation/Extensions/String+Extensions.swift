@@ -38,18 +38,4 @@ extension String {
     func split(string: String, ignoreEmptyComponents: Bool = false) -> [String] {
         components(separatedBy: string).filter { ignoreEmptyComponents ? !$0.isEmpty : true }
     }
-
-    func without(_ string: String) -> String {
-        with("", insteadOf: string)
-    }
-
-    /// Replaces occurrences of `target` with `replacement`
-    func with(_ replacement: String, insteadOf target: String) -> String {
-        replacingOccurrences(of: target, with: replacement)
-    }
-
-    /// Returns encoded data of `self`
-    func data(_ encoding: Encoding = .utf8) -> Data {
-        data(using: encoding) ?? .init()
-    }
 }

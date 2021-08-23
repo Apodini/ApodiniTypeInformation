@@ -45,7 +45,11 @@ public enum FluentPropertyType: String, TypeInformationElement, CaseIterable {
     // MARK: - Decodable
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        let string = try container.decode(String.self).without("@").lowerFirst + "Property"
+        let string = try container
+            .decode(String.self)
+            .replacingOccurrences(of: "@", with: "")
+            .lowerFirst
+            + "Property"
         
         guard let instance = FluentPropertyType(rawValue: string) else {
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Failed to decode \(Self.self)")
@@ -64,7 +68,7 @@ public enum FluentPropertyType: String, TypeInformationElement, CaseIterable {
 extension FluentPropertyType: CustomStringConvertible, CustomDebugStringConvertible {
     /// String representation, e.g. `@ID`
     public var description: String {
-        "@" + rawValue.upperFirst.without("Property")
+        "@" + rawValue.upperFirst.replacingOccurrences(of: "Property", with: "")
     }
     
     public var debugDescription: String {
