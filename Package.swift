@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.4
 
 //
 // This source file is part of the Apodini open source project
@@ -33,7 +33,7 @@ enum RuntimeDependency {
 let package = Package(
     name: "ApodiniTypeInformation",
     platforms: [
-        .macOS(.v12)
+        .macOS(.v10_15)
     ],
     products: [
         .library(name: "ApodiniTypeInformation", targets: ["ApodiniTypeInformation"])
