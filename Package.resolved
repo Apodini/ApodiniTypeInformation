@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Runtime",
+        "repositoryURL": "https://github.com/Supereg/Runtime.git",
+        "state": {
+          "branch": null,
+          "revision": "596e22a518bb3f8177cd796cd77e5386098a33f8",
+          "version": "2.2.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
