@@ -1,6 +1,6 @@
-# ``ApodiniTemplate``
+# ``ApodiniTypeInformation``
 
-A template for projects in the Apodini organization.
+A TypeInformation framework for all Apodini packages.
 
 <!--
                   
@@ -14,4 +14,4 @@ SPDX-License-Identifier: MIT
 
 ## Overview
 
-This is an example for a [DocC](https://developer.apple.com/documentation/docc) documentation for the ApodiniTemplate package.
+This is an example for a [DocC](https://developer.apple.com/documentation/docc) documentation for the ApodiniTypeInformation package.
