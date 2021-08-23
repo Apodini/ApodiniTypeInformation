@@ -11,11 +11,6 @@ import Foundation
 // MARK: - Encodable extensions
 extension Encodable {
     /// JSON String of this encodable
-    var json: String {
-        json()
-    }
-
-    /// JSON String of this encodable
     /// - Parameters:
     ///     - outputFormatting: Output formatting of the `JSONEncoder`
     func json(outputFormatting: JSONEncoder.OutputFormatting = [.withoutEscapingSlashes, .prettyPrinted]) -> String {

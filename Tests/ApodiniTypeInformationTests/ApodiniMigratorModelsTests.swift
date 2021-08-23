@@ -1,16 +1,24 @@
+//
+// This source file is part of the Apodini open source project
+//
+// SPDX-FileCopyrightText: 2019-2021 Paul Schmiedmayer and the Apodini project authors (see CONTRIBUTORS.md) <paul.schmiedmayer@tum.de>
+//
+// SPDX-License-Identifier: MIT
+//
+
 import XCTest
 @testable import ApodiniTypeInformation
-/*
-final class ApodiniMigratorModelsTests: ApodiniMigratorXCTestCase {
+
+final class ApodiniMigratorModelsTests: TypeInformationTestCase {
     func testFluentProperties() throws {
         try FluentPropertyType.allCases.forEach { property in
-            let json = property.json
+            let json = property.json()
             let instance = XCTAssertNoThrowWithResult(try FluentPropertyType.decode(from: json))
             XCTAssertEqual(property.description, property.debugDescription)
             XCTAssert(instance == property)
         }
         
-        XCTAssertThrows(try FluentPropertyType.decode(from: "@FluentID".json))
+        XCTAssertThrows(try FluentPropertyType.decode(from: "@FluentID".json()))
         
         let childredMangledName = MangledName("ChildrenProperty")
         if case let .fluentPropertyType(type) = childredMangledName {
@@ -20,7 +28,8 @@ final class ApodiniMigratorModelsTests: ApodiniMigratorXCTestCase {
             XCTFail("Mangled name did not correspond to a fluent property")
         }
     }
-    
+
+    /*
     func testDSLEndpointIdentifier() {
         var errors: [ErrorCode] = []
         errors.addError(404, message: "Not found")
@@ -47,6 +56,7 @@ final class ApodiniMigratorModelsTests: ApodiniMigratorXCTestCase {
         XCTAssert(noIDEndpoint.deltaIdentifier == .init(noIDEndpoint.handlerName.lowerFirst))
         XCTAssert(withIDEndpoint.deltaIdentifier == "getSomeHandler")
     }
+
     
     func testWrappedContentParameters() throws {
         let param1 = Parameter(name: "first", typeInformation: .scalar(.string), parameterType: .content, isRequired: true)
@@ -94,6 +104,7 @@ final class ApodiniMigratorModelsTests: ApodiniMigratorXCTestCase {
         
         XCTAssertThrows(try Version.decode(from: "v123".json))
     }
+    */
     
     func testRuntime() throws {
         typealias User = TestTypes.User
@@ -123,7 +134,8 @@ final class ApodiniMigratorModelsTests: ApodiniMigratorXCTestCase {
         XCTAssertThrows(try instance(User.self)) // can't create an enum instance
         XCTAssertNoThrow(try instance(TestTypes.Shop.self))
     }
-    
+
+    /*
     func testDocument() throws {
         var document = Document()
         document.add(
@@ -147,6 +159,7 @@ final class ApodiniMigratorModelsTests: ApodiniMigratorXCTestCase {
         XCTAssert(!document.json.isEmpty)
         XCTAssert(!document.yaml.isEmpty)
     }
+    */
     
     func testNull() throws {
         let null = Null()
@@ -155,4 +168,3 @@ final class ApodiniMigratorModelsTests: ApodiniMigratorXCTestCase {
         XCTAssertThrows(try JSONDecoder().decode(Null.self, from: .init()))
     }
 }
- */

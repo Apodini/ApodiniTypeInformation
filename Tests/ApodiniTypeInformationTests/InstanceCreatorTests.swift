@@ -1,8 +1,16 @@
+//
+// This source file is part of the Apodini open source project
+//
+// SPDX-FileCopyrightText: 2019-2021 Paul Schmiedmayer and the Apodini project authors (see CONTRIBUTORS.md) <paul.schmiedmayer@tum.de>
+//
+// SPDX-License-Identifier: MIT
+//
+
 import XCTest
 @testable import ApodiniTypeInformation
-// @testable import Runtime
+// @testable import Runtime TODO remove?
 
-final class InstanceCreatorTests: XCTestCase {
+final class InstanceCreatorTests: TypeInformationTestCase {
     struct Student: Codable, Equatable {
         let name: String
         let matrNr: UUID
@@ -36,7 +44,7 @@ final class InstanceCreatorTests: XCTestCase {
     func testNonFluentModel() throws {
         let student = try typedInstance(Student.self)
         
-        let studentJSON = student.json
+        let studentJSON = student.json()
         
         let studentFromJSON = try Student.decode(from: studentJSON)
         XCTAssert(student == studentFromJSON)

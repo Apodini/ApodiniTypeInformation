@@ -9,7 +9,7 @@
 import Foundation
 
 /// Represents different cardinalities of type
-enum Cardinality {
+public enum Cardinality {
     /// An exactly one cardinality
     case exactlyOne(Any.Type)
     /// A repeated cardinality
@@ -22,7 +22,7 @@ enum Cardinality {
 
 // MARK: - Equatable
 extension Cardinality: Equatable {
-    static func == (lhs: Cardinality, rhs: Cardinality) -> Bool {
+    public static func == (lhs: Cardinality, rhs: Cardinality) -> Bool {
         switch (lhs, rhs) {
         case let (.exactlyOne(lhsType), .exactlyOne(rhsType)):
             return lhsType == rhsType

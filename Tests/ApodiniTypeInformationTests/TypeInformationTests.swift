@@ -1,29 +1,16 @@
+//
+// This source file is part of the Apodini open source project
+//
+// SPDX-FileCopyrightText: 2019-2021 Paul Schmiedmayer and the Apodini project authors (see CONTRIBUTORS.md) <paul.schmiedmayer@tum.de>
+//
+// SPDX-License-Identifier: MIT
+//
+
 import XCTest
 @testable import ApodiniTypeInformation
 import Runtime
 
-final class TypeInformationTests: XCTestCase {
-    func XCTAssertNoThrowWithResult<T>(_ expression: @autoclosure () throws -> T) -> T {
-        XCTAssertNoThrow(try expression())
-        do {
-            return try expression()
-        } catch {
-            XCTFail(error.localizedDescription)
-        }
-        preconditionFailure("Expression threw an error")
-    }
-
-    func XCTAssertThrows<T>(_ expression: @autoclosure () throws -> T) {
-        let expectation = XCTestExpectation(description: "Expression did throw")
-        do {
-            _ = try expression()
-            XCTFail("Expression did not throw")
-        } catch {
-            expectation.fulfill()
-        }
-    }
-
-    // swiftlint:disable:next function_body_length
+final class TypeInformationTests: TypeInformationTestCase {
     func testUserTypeInformation() throws {
         let user = XCTAssertNoThrowWithResult(try TypeInformation.of(TestTypes.User.self, with: RuntimeBuilder.self))
         
@@ -94,7 +81,7 @@ final class TypeInformationTests: XCTestCase {
         XCTAssertEqual(arrayInt, .repeated(element: int))
         XCTAssertEqual(bool, .scalar(.bool))
         
-        let nonValidScalar = TypeInformation.scalar(.bool).json.with("", insteadOf: "Bool")
+        let nonValidScalar = TypeInformation.scalar(.bool).json().with("", insteadOf: "Bool")
         XCTAssertThrows(try TypeInformation.decode(from: nonValidScalar))
         
         let null = try XCTUnwrap(PrimitiveType(Null.self))
@@ -175,18 +162,5 @@ final class TypeInformationTests: XCTestCase {
         XCTAssertEqual(result, typeInformation)
         // TypesStore only stores complex types and enums
         XCTAssertEqual(store.store(.scalar(.string)), .scalar(.string))
-    }
-
-    // TODO move test to other thing
-    func testJSONCreation() throws {
-        /*
-        let json = XCTAssertNoThrowWithResult(try JSONStringBuilder.jsonString(TestTypes.Student.self))
-        
-        let instance = XCTAssertNoThrowWithResult(try TestTypes.Student.decode(from: json))
-        XCTAssert(instance.grades.isEmpty)
-        XCTAssert(instance.age == 0)
-        XCTAssert(instance.name == "")
-
-         */
     }
 }

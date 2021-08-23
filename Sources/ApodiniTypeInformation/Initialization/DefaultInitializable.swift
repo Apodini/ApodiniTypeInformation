@@ -43,7 +43,7 @@ public extension DefaultInitializable {
     /// Default value as returned by `init(_:)`
     static var `default`: Self { .init(.default) }
     /// Json string of the default value
-    static var jsonString: String { `default`.json }
+    static var jsonString: String { `default`.json() }
 }
 
 // MARK: - DefaultInitializable conformance

@@ -136,11 +136,11 @@ extension TypeInformation {
 extension TypeInformation: CustomStringConvertible, CustomDebugStringConvertible {
     /// String representation of self
     public var description: String {
-        json // TODO rethink that?
+        json() // TODO rethink that?
     }
     
     /// String representation of self
     public var debugDescription: String {
-        json
+        json()
     }
 }
