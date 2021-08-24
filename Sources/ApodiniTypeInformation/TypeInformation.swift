@@ -18,7 +18,7 @@ public enum TypeInformation: TypeInformationElement {
     /// An optional type with `TypeInformation` wrapped values
     indirect case optional(wrappedValue: TypeInformation)
     /// An enum type with `String` cases
-    case `enum`(name: TypeName, rawValueType: RawValueType, cases: [EnumCase]) // TODO we always just assume RawValue?
+    case `enum`(name: TypeName, rawValueType: RawValueType, cases: [EnumCase])
     /// An object type with properties containing a `TypeInformation` and a name
     case object(name: TypeName, properties: [TypeProperty])
     /// A reference to a type information instance

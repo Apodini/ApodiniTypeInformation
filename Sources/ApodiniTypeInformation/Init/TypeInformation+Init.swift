@@ -42,7 +42,6 @@ extension TypeInformation {
         
             if typeInfo.kind == .enum {
                 guard typeInfo.numberOfPayloadEnumCases == 0 else {
-                    // TODO why is it not supported?
                     throw TypeInformationError.enumCaseWithAssociatedValue(
                         message: "Construction of enums with associated values is currently not supported"
                     )
@@ -79,7 +78,6 @@ extension TypeInformation {
                     }
                 self = .object(name: typeInfo.typeName, properties: properties)
             } else {
-                // TODO
                 throw TypeInformationError.initFailure(message: "TypeInformation construction of \(typeInfo.kind) is not supported")
             }
         }

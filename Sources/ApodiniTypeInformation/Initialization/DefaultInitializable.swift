@@ -34,7 +34,7 @@ public struct Default {
     /// A convenience static func to retrieve the typed default value of a `DefaultInitializable` type.
     /// e.g. `let date = Default.value(of: Date.self)` would return the date of today noon.
     public static func value<D: DefaultInitializable>(of type: D.Type) -> D {
-        D.default // TODO test or it is unused!
+        D.default
     }
 }
 
@@ -215,7 +215,7 @@ extension Float: DefaultInitializable {
 
 extension Data: DefaultInitializable {
     /// Default initializer
-    public init(_ default: Default) { // TODO test or it is unused!
+    public init(_ default: Default) {
         self.init()
     }
     
@@ -240,9 +240,8 @@ extension String: DefaultInitializable {
 extension URL: DefaultInitializable {
     /// Default initializer
     public init(_ default: Default) {
-        // TODO migrator
         // swiftlint:disable:next force_unwrapping
-        self = URL(string: "https://github.com/Apodini/ApodiniMigrator.git")!
+        self = URL(string: "https://github.com/Apodini/Apodini")!
     }
     
     /// Returns the default type information

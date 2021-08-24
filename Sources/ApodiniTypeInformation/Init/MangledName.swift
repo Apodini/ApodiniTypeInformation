@@ -6,8 +6,6 @@
 // SPDX-License-Identifier: MIT
 //
 
-// TODO REUSE everywhere
-
 import Foundation
 
 enum MangledName: Equatable {

@@ -170,7 +170,7 @@ public extension TypeInformation {
     }
     
     /// Indicate whether `self` has the same root type with other `typeInformation`
-    func sameType(with typeInformation: TypeInformation) -> Bool { // TODO really?
+    func sameType(with typeInformation: TypeInformation) -> Bool {
         rootType == typeInformation.rootType
     }
     
