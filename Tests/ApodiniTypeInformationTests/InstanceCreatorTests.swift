@@ -50,9 +50,13 @@ final class InstanceCreatorTests: TypeInformationTestCase {
     }
 
     func testInstanceCreation() throws {
-        let student = try typedInstance(TestTypes.Student.self)
+        var student = try typedInstance(TestTypes.Student.self)
 
-        let studentJSON = try student.toJSON()
+        // mitigation, as linux weirdly encodes empty json object for empty dictionaries but the decoder expects an array.
+        student.shop.directions[UUID()] = 0
+
+        let studentJSON = try student.toJSON(outputFormatting: [.prettyPrinted])
+        print(try studentJSON.string())
 
         let studentFromJSON = try TestTypes.Student.fromJSON(studentJSON)
         XCTAssertEqual(student, studentFromJSON)

@@ -19,7 +19,7 @@ struct InstanceCreator {
     /// The instance that has been created
     var instance: Any
     
-    /// Initalizes self out of `type` and stores the created instance in `instance`
+    /// Initializes self out of `type` and stores the created instance in `instance`
     init(for type: Any.Type) throws {
         if let defaultInitializableType = type as? DefaultInitializable.Type {
             instance = defaultInitializableType.init(.default)
@@ -53,6 +53,8 @@ struct InstanceCreator {
             try handleOptional(on: $0)
             try handlePropertyWrapper(on: $0)
             try handleFluentProperty(on: $0)
+
+            // TODO we need to recurse into the types to
         }
     }
     

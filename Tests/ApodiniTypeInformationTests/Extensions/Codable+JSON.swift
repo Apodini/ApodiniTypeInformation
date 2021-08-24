@@ -9,9 +9,11 @@
 import Foundation
 
 extension Encodable {
-    func toJSON(outputFormatting: JSONEncoder.OutputFormatting = []) throws -> Data {
+    func toJSON(outputFormatting: JSONEncoder.OutputFormatting? = nil) throws -> Data {
         let encoder = JSONEncoder()
-        encoder.outputFormatting = outputFormatting
+        if let outputFormatting = outputFormatting {
+            encoder.outputFormatting = outputFormatting
+        }
         return try encoder.encode(self)
     }
 }

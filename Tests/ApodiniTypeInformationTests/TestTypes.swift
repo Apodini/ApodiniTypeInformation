@@ -19,7 +19,7 @@ extension TestTypes {
         let grades: [Double: String]
         let birthday: Date
         let url: URL?
-        let shop: Shop
+        var shop: Shop
         let car: Car
 
         static func == (lhs: TestTypes.Student, rhs: TestTypes.Student) -> Bool {
@@ -58,7 +58,7 @@ extension TestTypes {
         let id: UUID
         let licence: UInt?
         let url: URL
-        let directions: [UUID: Int]
+        var directions: [UUID: Int]
         let car: Car
 
         static func == (lhs: TestTypes.Shop, rhs: TestTypes.Shop) -> Bool {
