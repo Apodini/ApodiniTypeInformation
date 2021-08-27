@@ -15,10 +15,16 @@ public protocol AnyStaticContentMetadataBlock: AnyContentMetadataBlock {
 }
 
 public extension AnyStaticContentMetadataBlock {
+    /// Type erased metadata content of this block.
     var typeErasedContent: AnyMetadata {
         Self.typeErasedContent
     }
 
+    /// This method accepts the `MetadataParser` in order to parse the Metadata tree.
+    /// The implementation should either forward the visitor to its content (e.g. in the case of a `AnyMetadataBlock`)
+    /// or add the parsed Metadata to the visitor.
+    ///
+    /// - Parameter visitor: The `MetadataParser` parsing the Metadata tree.
     static func collectMetadata(_ visitor: MetadataParser) {
         typeErasedContent.collectMetadata(visitor)
     }
@@ -61,7 +67,7 @@ public protocol ContentMetadataBlock: AnyContentMetadataBlock {
 public extension ContentMetadataBlock {
     /// Returns the type erased metadata content of the ``AnyMetadataBlock``.
     var typeErasedContent: AnyMetadata {
-        self.metadata as! AnyMetadata
+        self.metadata as! AnyMetadata // swiftlint:disable:this force_cast
     }
 }
 
@@ -75,7 +81,7 @@ public protocol StaticContentMetadataBlock: AnyStaticContentMetadataBlock {
 public extension StaticContentMetadataBlock {
     /// Returns the type erased metadata content of the ``AnyMetadataBlock``.
     static var typeErasedContent: AnyMetadata {
-        Self.metadata as! AnyMetadata
+        Self.metadata as! AnyMetadata // swiftlint:disable:this force_cast
     }
 }
 

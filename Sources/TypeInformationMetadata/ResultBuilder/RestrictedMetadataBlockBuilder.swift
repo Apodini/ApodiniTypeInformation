@@ -45,4 +45,3 @@ public extension RestrictedMetadataBlockBuilder where Block: ContentMetadataBloc
         AnyContentMetadataArray(components)
     }
 }
-
