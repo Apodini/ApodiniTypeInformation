@@ -21,11 +21,11 @@ public enum TypeInformation: TypeInformationElement {
     /// An enum type with `String` cases.
     /// The `Context` captures any Metadata Declarations, if the analyzed type provides
     /// Metadata Declarations by conforming to `StaticContentMetadataBlock`.
-    case `enum`(name: TypeName, rawValueType: RawValueType, cases: [EnumCase], context: Context)
+    case `enum`(name: TypeName, rawValueType: RawValueType, cases: [EnumCase], context: Context = .init())
     /// An object type with properties containing a `TypeInformation` and a name.
     /// The `Context` captures any Metadata Declarations, if the analyzed type provides
     /// Metadata Declarations by conforming to `StaticContentMetadataBlock`.
-    case object(name: TypeName, properties: [TypeProperty], context: Context)
+    case object(name: TypeName, properties: [TypeProperty], context: Context = init())
     /// A reference to a type information instance
     case reference(ReferenceKey)
 }

@@ -349,7 +349,7 @@ public extension TypeInformation {
     }
     
     /// Returns an enum with string raw value with the given name and cases
-    static func `enum`(name: TypeName, cases: [EnumCase], context: Context) -> TypeInformation {
+    static func `enum`(name: TypeName, cases: [EnumCase], context: Context = .init()) -> TypeInformation {
         .enum(name: name, rawValueType: .string, cases: cases, context: context)
     }
 
