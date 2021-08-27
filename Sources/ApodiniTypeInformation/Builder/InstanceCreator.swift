@@ -53,8 +53,6 @@ struct InstanceCreator {
             try handleOptional(on: $0)
             try handlePropertyWrapper(on: $0)
             try handleFluentProperty(on: $0)
-
-            // TODO we need to recurse into the types to
         }
     }
     

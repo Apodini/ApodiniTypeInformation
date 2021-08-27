@@ -47,7 +47,7 @@ extension Array where Element: TypeInformationElement {
         return mutableLhs
     }
 
-    /// Appends lhs to rhs TODO operate precedence is pretty unintuitive!!
+    /// Appends lhs to rhs
     static func + (lhs: Element, rhs: Self) -> Self {
         rhs + lhs
     }

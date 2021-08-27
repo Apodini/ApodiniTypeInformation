@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import TypeInformationMetadata
 
 // MARK: - TypeInformation public
 public extension TypeInformation {
@@ -46,7 +47,10 @@ extension TypeInformation {
                         message: "Construction of enums with associated values is currently not supported"
                     )
                 }
-                self = .enum(name: typeInfo.typeName, cases: typeInfo.cases.map { .init($0.name) })
+
+                let context = Self.parseMetadata(for: type)
+
+                self = .enum(name: typeInfo.typeName, rawValueType: .string, cases: typeInfo.cases.map { .init($0.name) }, context: context)
             } else if [.struct, .class].contains(typeInfo.kind) {
                 let properties: [TypeProperty] = try typeInfo.properties()
                     .compactMap {
@@ -76,11 +80,22 @@ extension TypeInformation {
                             throw TypeInformationError.initFailure(message: error.localizedDescription)
                         }
                     }
-                self = .object(name: typeInfo.typeName, properties: properties)
+
+                let context = Self.parseMetadata(for: type)
+
+                self = .object(name: typeInfo.typeName, properties: properties, context: context)
             } else {
                 throw TypeInformationError.initFailure(message: "TypeInformation construction of \(typeInfo.kind) is not supported")
             }
         }
+    }
+
+    static func parseMetadata(for type: Any.Type) -> Context {
+        let parser = StandardMetadataParser()
+        if let content = type as? AnyStaticContentMetadataBlock.Type {
+            content.collectMetadata(parser)
+        }
+        return parser.exportContext()
     }
     
     /// Returns the ``TypeInformation`` instance corresponding to `property`, by considering the type of wrappedValue of property wrapper
@@ -118,7 +133,8 @@ extension TypeInformation {
         
         let customIDObject: TypeInformation = .object(
             name: .init(name: String(describing: nestedPropertyType) + "ID"),
-            properties: [.init(name: "id", type: .optional(wrappedValue: try .init(for: idType)))]
+            properties: [.init(name: "id", type: .optional(wrappedValue: try .init(for: idType)))],
+            context: parseMetadata(for: nestedPropertyType)
         )
         
         return property.fluentPropertyType == .optionalParentProperty
@@ -151,6 +167,11 @@ extension TypeInformation {
                     annotation: nestedTypeProperty.fluentPropertyType?.description
                 )
             }
-        return .repeated(element: .object(name: typeInfo.typeName, properties: properties))
+
+        return .repeated(element: .object(
+            name: typeInfo.typeName,
+            properties: properties,
+            context: parseMetadata(for: nestedPropertyType)
+        ))
     }
 }
