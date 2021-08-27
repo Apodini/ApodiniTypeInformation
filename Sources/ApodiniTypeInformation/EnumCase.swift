@@ -8,19 +8,6 @@
 
 import Foundation
 
-/// Represents distinct cases of raw value types of an enumeration
-public enum RawValueType: String, Hashable, Codable, CustomStringConvertible {
-    /// An integer raw value type
-    case int
-    /// A string raw value type
-    case string
-    
-    /// Textual representation of `self`
-    public var description: String {
-        rawValue.upperFirst
-    }
-}
-
 /// Represents a case of an enumeration
 public struct EnumCase: TypeInformationElement {
     /// Name of the case

@@ -2,6 +2,24 @@
   "object": {
     "pins": [
       {
+        "package": "AssociatedTypeRequirementsKit",
+        "repositoryURL": "https://github.com/nerdsupremacist/AssociatedTypeRequirementsKit.git",
+        "state": {
+          "branch": null,
+          "revision": "2e4c49c21ffb2135f1c99fbfcf2119c9d24f5e8c",
+          "version": "0.3.2"
+        }
+      },
+      {
+        "package": "MetadataSystem",
+        "repositoryURL": "https://github.com/Apodini/MetadataSystem.git",
+        "state": {
+          "branch": null,
+          "revision": "5c5b7f0a01017785e3d265fa5d04f0e0b5b3a733",
+          "version": "0.1.0"
+        }
+      },
+      {
         "package": "Runtime",
         "repositoryURL": "https://github.com/Supereg/Runtime.git",
         "state": {

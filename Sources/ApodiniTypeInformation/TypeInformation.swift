@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MetadataSystem
 
 public enum TypeInformation: TypeInformationElement {
     /// A scalar type
@@ -17,16 +18,52 @@ public enum TypeInformation: TypeInformationElement {
     indirect case dictionary(key: PrimitiveType, value: TypeInformation)
     /// An optional type with `TypeInformation` wrapped values
     indirect case optional(wrappedValue: TypeInformation)
-    /// An enum type with `String` cases
-    case `enum`(name: TypeName, rawValueType: RawValueType, cases: [EnumCase])
-    /// An object type with properties containing a `TypeInformation` and a name
-    case object(name: TypeName, properties: [TypeProperty])
+    /// An enum type with `String` cases.
+    /// The `Context` captures any Metadata Declarations, if the analyzed type provides
+    /// Metadata Declarations by conforming to `StaticContentMetadataBlock`.
+    indirect case `enum`(name: TypeName, rawValueType: TypeInformation?, cases: [EnumCase], context: Context = .init())
+    /// An object type with properties containing a `TypeInformation` and a name.
+    /// The `Context` captures any Metadata Declarations, if the analyzed type provides
+    /// Metadata Declarations by conforming to `StaticContentMetadataBlock`.
+    case object(name: TypeName, properties: [TypeProperty], context: Context = .init())
     /// A reference to a type information instance
     case reference(ReferenceKey)
 }
 
-// MARK: - TypeInformation + Equatable
-extension TypeInformation {
+// MARK: - TypeInformation + Equatable + Hashable
+extension TypeInformation: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        switch self {
+        case let .scalar(primitiveType):
+            hasher.combine(0)
+            hasher.combine(primitiveType)
+        case let .repeated(element):
+            hasher.combine(1)
+            hasher.combine(element)
+        case let .dictionary(key, value):
+            hasher.combine(2)
+            hasher.combine(key)
+            hasher.combine(value)
+        case let .optional(wrappedValue):
+            hasher.combine(3)
+            hasher.combine(wrappedValue)
+        case let .enum(name, rawValueType, cases, _):
+            hasher.combine(4)
+            hasher.combine(name)
+            hasher.combine(rawValueType)
+            hasher.combine(cases)
+            // context is not considered for hashing
+        case let .object(name, properties, _):
+            hasher.combine(5)
+            hasher.combine(name)
+            hasher.combine(properties)
+            // context is not considered for hashing
+        case let .reference(referenceKey):
+            hasher.combine(6)
+            hasher.combine(referenceKey)
+        }
+    }
+
     /// Returns with lhs is equal to rhs
     public static func == (lhs: TypeInformation, rhs: TypeInformation) -> Bool {
         if !lhs.sameType(with: rhs) {
@@ -42,9 +79,9 @@ extension TypeInformation {
             return lhsKey == rhsKey && lhsValue == rhsValue
         case let (.optional(lhsWrappedValue), .optional(rhsWrappedValue)):
             return lhsWrappedValue == rhsWrappedValue
-        case let (.enum(lhsName, lhsRawValue, lhsCases), .enum(rhsName, rhsRawValue, rhsCases)):
+        case let (.enum(lhsName, lhsRawValue, lhsCases, _), .enum(rhsName, rhsRawValue, rhsCases, _)):
             return lhsName == rhsName && lhsRawValue == rhsRawValue && lhsCases.equalsIgnoringOrder(to: rhsCases)
-        case let (.object(lhsName, lhsProperties), .object(rhsName, rhsProperties)):
+        case let (.object(lhsName, lhsProperties, _), .object(rhsName, rhsProperties, _)):
             return lhsName == rhsName && lhsProperties.equalsIgnoringOrder(to: rhsProperties)
         case let (.reference(lhsKey), .reference(rhsKey)):
             return lhsKey == rhsKey
@@ -86,12 +123,12 @@ extension TypeInformation {
             try dictionaryContainer.encode(key, forKey: .key)
             try dictionaryContainer.encode(value, forKey: .value)
         case let .optional(wrappedValue): try container.encode(wrappedValue, forKey: .optional)
-        case let .enum(name, rawValue, cases):
+        case let .enum(name, rawValue, cases, _):
             var enumContainer = container.nestedContainer(keyedBy: EnumKeys.self, forKey: .enum)
             try enumContainer.encode(name, forKey: .typeName)
-            try enumContainer.encode(rawValue, forKey: .rawValueType)
+            try enumContainer.encodeIfPresent(rawValue, forKey: .rawValueType)
             try enumContainer.encode(cases, forKey: .cases)
-        case let .object(name, properties):
+        case let .object(name, properties, _):
             var objectContainer = container.nestedContainer(keyedBy: ObjectKeys.self, forKey: .object)
             try objectContainer.encode(name, forKey: .typeName)
             try objectContainer.encodeIfNotEmpty(properties, forKey: .properties)
@@ -117,14 +154,15 @@ extension TypeInformation {
         case .enum:
             let enumContainer = try container.nestedContainer(keyedBy: EnumKeys.self, forKey: .enum)
             let name = try enumContainer.decode(TypeName.self, forKey: .typeName)
-            let rawValueType = try enumContainer.decode(RawValueType.self, forKey: .rawValueType)
+            let rawValueType = try enumContainer.decodeIfPresent(TypeInformation.self, forKey: .rawValueType)
             let cases = try enumContainer.decode([EnumCase].self, forKey: .cases)
-            self = .enum(name: name, rawValueType: rawValueType, cases: cases)
+            self = .enum(name: name, rawValueType: rawValueType, cases: cases, context: .init())
         case .object:
             let objectContainer = try container.nestedContainer(keyedBy: ObjectKeys.self, forKey: .object)
             self = .object(
                 name: try objectContainer.decode(TypeName.self, forKey: .typeName),
-                properties: try objectContainer.decodeIfPresentOrInitEmpty([TypeProperty].self, forKey: .properties)
+                properties: try objectContainer.decodeIfPresentOrInitEmpty([TypeProperty].self, forKey: .properties),
+                context: .init()
             )
         case .reference: self = .reference(try container.decode(ReferenceKey.self, forKey: .reference))
         default: throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "Failed to decode TypeInformation"))
