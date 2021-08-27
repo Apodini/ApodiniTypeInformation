@@ -228,6 +228,8 @@ public extension TypeInformation {
         isOptional ? self : .optional(wrappedValue: self)
     }
 
+    /// Retrieves the `Context` where parsed Metadata is stored of a ``TypeInformation`` instance.
+    /// Returns nil for cases of ``TypeInformation`` which don't expose Metadata declaration blocks.
     var context: Context? {
         switch self {
         case let .object(_, _, context):

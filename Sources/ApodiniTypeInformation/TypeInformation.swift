@@ -31,7 +31,7 @@ public enum TypeInformation: TypeInformationElement {
 }
 
 // MARK: - TypeInformation + Equatable + Hashable
-extension TypeInformation {
+extension TypeInformation: Hashable {
     public func hash(into hasher: inout Hasher) {
         switch self {
         case let .scalar(primitiveType):
