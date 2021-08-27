@@ -25,7 +25,7 @@ public enum TypeInformation: TypeInformationElement {
     /// An object type with properties containing a `TypeInformation` and a name.
     /// The `Context` captures any Metadata Declarations, if the analyzed type provides
     /// Metadata Declarations by conforming to `StaticContentMetadataBlock`.
-    case object(name: TypeName, properties: [TypeProperty], context: Context = init())
+    case object(name: TypeName, properties: [TypeProperty], context: Context = .init())
     /// A reference to a type information instance
     case reference(ReferenceKey)
 }
