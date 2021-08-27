@@ -21,7 +21,7 @@ public enum TypeInformation: TypeInformationElement {
     /// An enum type with `String` cases.
     /// The `Context` captures any Metadata Declarations, if the analyzed type provides
     /// Metadata Declarations by conforming to `StaticContentMetadataBlock`.
-    case `enum`(name: TypeName, rawValueType: RawValueType, cases: [EnumCase], context: Context = .init())
+    indirect case `enum`(name: TypeName, rawValueType: TypeInformation?, cases: [EnumCase], context: Context = .init())
     /// An object type with properties containing a `TypeInformation` and a name.
     /// The `Context` captures any Metadata Declarations, if the analyzed type provides
     /// Metadata Declarations by conforming to `StaticContentMetadataBlock`.
@@ -126,7 +126,7 @@ extension TypeInformation {
         case let .enum(name, rawValue, cases, _):
             var enumContainer = container.nestedContainer(keyedBy: EnumKeys.self, forKey: .enum)
             try enumContainer.encode(name, forKey: .typeName)
-            try enumContainer.encode(rawValue, forKey: .rawValueType)
+            try enumContainer.encodeIfPresent(rawValue, forKey: .rawValueType)
             try enumContainer.encode(cases, forKey: .cases)
         case let .object(name, properties, _):
             var objectContainer = container.nestedContainer(keyedBy: ObjectKeys.self, forKey: .object)
@@ -154,7 +154,7 @@ extension TypeInformation {
         case .enum:
             let enumContainer = try container.nestedContainer(keyedBy: EnumKeys.self, forKey: .enum)
             let name = try enumContainer.decode(TypeName.self, forKey: .typeName)
-            let rawValueType = try enumContainer.decode(RawValueType.self, forKey: .rawValueType)
+            let rawValueType = try enumContainer.decodeIfPresent(TypeInformation.self, forKey: .rawValueType)
             let cases = try enumContainer.decode([EnumCase].self, forKey: .cases)
             self = .enum(name: name, rawValueType: rawValueType, cases: cases, context: .init())
         case .object:

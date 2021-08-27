@@ -8,6 +8,7 @@
 
 import Foundation
 import TypeInformationMetadata
+@_implementationOnly import AssociatedTypeRequirementsVisitor
 
 // MARK: - TypeInformation public
 public extension TypeInformation {
@@ -48,9 +49,16 @@ extension TypeInformation {
                     )
                 }
 
+                let rawValueType: TypeInformation?
+                if let rawValue = RawEnumVisitor()(type) {
+                    rawValueType = try .init(for: rawValue)
+                } else {
+                    rawValueType = nil
+                }
+
                 let context = Self.parseMetadata(for: type)
 
-                self = .enum(name: typeInfo.typeName, rawValueType: .string, cases: typeInfo.cases.map { .init($0.name) }, context: context)
+                self = .enum(name: typeInfo.typeName, rawValueType: rawValueType, cases: typeInfo.cases.map { .init($0.name) }, context: context)
             } else if [.struct, .class].contains(typeInfo.kind) {
                 let properties: [TypeProperty] = try typeInfo.properties()
                     .compactMap {
@@ -173,5 +181,11 @@ extension TypeInformation {
             properties: properties,
             context: parseMetadata(for: nestedPropertyType)
         ))
+    }
+}
+
+private struct RawEnumVisitor: RawRepresentableTypeVisitor {
+    func callAsFunction<T: RawRepresentable>(_ type: T.Type) -> Any.Type {
+        T.self.RawValue
     }
 }

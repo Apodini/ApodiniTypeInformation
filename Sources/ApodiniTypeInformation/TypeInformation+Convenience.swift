@@ -215,8 +215,8 @@ public extension TypeInformation {
         return []
     }
     
-    /// Return rawValueType type if `self` is enum
-    var rawValueType: RawValueType? {
+    /// Return rawValueType type if `self` is enum and enum has a raw value type.
+    var rawValueType: TypeInformation? {
         if case let .enum(_, rawValueType, _, _) = self {
             return rawValueType
         }
@@ -346,11 +346,6 @@ public extension TypeInformation {
     /// Returns all distinct objects in `allTypes()`
     func objectTypes() -> [TypeInformation] {
         filter(\.isObject)
-    }
-    
-    /// Returns an enum with string raw value with the given name and cases
-    static func `enum`(name: TypeName, cases: [EnumCase], context: Context = .init()) -> TypeInformation {
-        .enum(name: name, rawValueType: .string, cases: cases, context: context)
     }
 
     /// Returns a reference with the given string key
