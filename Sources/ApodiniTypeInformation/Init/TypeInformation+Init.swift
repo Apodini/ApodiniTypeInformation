@@ -33,9 +33,9 @@ public extension TypeInformation {
 
 // MARK: - TypeInformation internal
 extension TypeInformation {
-    /// Initializes a ``TypeInformation`` instance from `type`. `includeObjectProperties` flag that indicates whether to include object properties or not
+    /// Initializes a ``TypeInformation`` instance from `type`
     private init(for type: Any.Type) throws {
-        if let type = type as? TypeInformationPrimitiveConstructor.Type {
+        if let type = type as? TypeInformationDefaultConstructor.Type {
             self = type.construct()
         } else if let type = type as? TypeInformationComplexConstructor.Type {
             self = try type.construct(with: RuntimeBuilder.self)

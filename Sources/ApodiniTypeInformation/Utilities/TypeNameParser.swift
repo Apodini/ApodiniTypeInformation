@@ -17,7 +17,8 @@ enum ParsedTypeNamePart: Hashable {
 
 class TypeNameParser {
     enum State {
-        case targetName
+        // macos is a bit special as e.g. NSString or NSData are not located under a separate target
+        case targetNameOrTypeName
         case typeName
         case parsingGeneric
     }
@@ -28,7 +29,7 @@ class TypeNameParser {
     private var index: String.Index
 
     /// The current parser state.
-    private var state: State = .targetName
+    private var state: State = .targetNameOrTypeName
 
     /// Used to store all characters of a type name or target name while parsing.
     private var typeNameOutput: [Character] = []
@@ -40,7 +41,7 @@ class TypeNameParser {
     private var genericOutput: [ParsedTypeName] = []
 
     /// Captures the current generic argument parsing depth.
-    /// Property is incremented for every `<` encountered, and decremeneted for every `>` encountered.
+    /// Property is incremented for every `<` encountered, and decremented for every `>` encountered.
     private var genericParsingDepth = 0
 
     /// Consecutively stores the result of the parser.
@@ -67,8 +68,8 @@ class TypeNameParser {
 
     func handle(next character: Character) {
         switch state {
-        case .targetName:
-            handlePackageName(character: character)
+        case .targetNameOrTypeName:
+            handleTargetName(character: character)
         case .typeName:
             handleTypeName(character: character)
         case .parsingGeneric:
@@ -76,9 +77,22 @@ class TypeNameParser {
         }
     }
 
-    private func handlePackageName(character: Character) {
-        if character == "." || !hasRemainingInput {
+    private func handleTargetName(character: Character) {
+        if character == "<" { // we are a type name not a target name
+            state = .typeName
+            handleTypeName(character: character)
+            return
+        }
+
+        if character == "." {
             result.append(.targetName(name: String(typeNameOutput)))
+            typeNameOutput.removeAll()
+
+            state = .typeName
+        } else if !hasRemainingInput {
+            // we have EOF, therefore its not a target name, its a type name
+            typeNameOutput.append(character)
+            result.append(.typeName(name: String(typeNameOutput)))
             typeNameOutput.removeAll()
 
             state = .typeName

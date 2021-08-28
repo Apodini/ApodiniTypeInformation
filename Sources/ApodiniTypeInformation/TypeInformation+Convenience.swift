@@ -148,14 +148,14 @@ public extension TypeInformation {
         }
     }
     
-    /// String representation of the type in a `Swift` compliant way
+    /// String representation of the type in a `Swift` compliant way, e.g. `User`, `User?`, `[String: User]` or `[User]`
     var typeString: String {
         switch self {
         case let .scalar(primitiveType): return primitiveType.description
         case let .repeated(element): return "[\(element.typeString)]"
         case let .dictionary(key, value): return "[\(key.description): \(value.typeString)]"
         case let .optional(wrappedValue): return wrappedValue.typeString + "?"
-        case .enum, .object, .reference: return typeName.name
+        case .enum, .object, .reference: return typeName.absoluteName()
         }
     }
     

@@ -11,7 +11,7 @@ import Foundation
 /// A protocol that forces the presence of an `init(_ default: Default)` initializer,
 /// where `Default` is an empty struct that can either be initialized with `.init()` or
 /// `.default` static variable.
-public protocol DefaultInitializable: Encodable, TypeInformationPrimitiveConstructor {
+public protocol DefaultInitializable: Encodable, TypeInformationDefaultConstructor {
     init(_ default: Default)
 }
 
@@ -285,7 +285,7 @@ extension Array: DefaultInitializable where Element: DefaultInitializable {
     }
 }
 
-extension Array: TypeInformationPrimitiveConstructor where Element: DefaultInitializable {
+extension Array: TypeInformationDefaultConstructor where Element: DefaultInitializable {
     /// Returns the default type information
     public static func construct() -> TypeInformation {
         .repeated(element: Element.construct())
@@ -299,7 +299,7 @@ extension Set: DefaultInitializable where Element: DefaultInitializable {
     }
 }
 
-extension Set: TypeInformationPrimitiveConstructor where Element: DefaultInitializable {
+extension Set: TypeInformationDefaultConstructor where Element: DefaultInitializable {
     /// Returns the default type information
     public static func construct() -> TypeInformation {
         .repeated(element: Element.construct())
@@ -313,7 +313,7 @@ extension Dictionary: DefaultInitializable where Key: DefaultInitializable, Valu
     }
 }
 
-extension Dictionary: TypeInformationPrimitiveConstructor where Key: DefaultInitializable, Value: DefaultInitializable {
+extension Dictionary: TypeInformationDefaultConstructor where Key: DefaultInitializable, Value: DefaultInitializable {
     /// Returns the default type information
     public static func construct() -> TypeInformation {
         guard let primitiveType = PrimitiveType(Key.self) else {
@@ -330,7 +330,7 @@ extension Optional: DefaultInitializable where Wrapped: DefaultInitializable {
     }
 }
 
-extension Optional: TypeInformationPrimitiveConstructor where Wrapped: DefaultInitializable {
+extension Optional: TypeInformationDefaultConstructor where Wrapped: DefaultInitializable {
     /// Returns the default type information
     public static func construct() -> TypeInformation {
         .optional(wrappedValue: Wrapped.construct())

@@ -57,7 +57,7 @@ final class TypeInformationMetadataTests: TypeInformationTestCase {
             return
         }
 
-        XCTAssertEqual(name.name, "TypeInformationMetadataTestsSomeType")
+        XCTAssertEqual(name.name, "SomeType")
         XCTAssertEqual(name.definedIn, "ApodiniTypeInformationTests")
         XCTAssertEqual(name.genericTypeNames, [])
 
@@ -75,7 +75,7 @@ final class TypeInformationMetadataTests: TypeInformationTestCase {
                     return
                 }
 
-                XCTAssertEqual(name.name, "TypeInformationMetadataTestsSubType")
+                XCTAssertEqual(name.name, "SubType")
                 XCTAssertEqual(name.definedIn, "ApodiniTypeInformationTests")
                 XCTAssertEqual(name.genericTypeNames, [])
 
