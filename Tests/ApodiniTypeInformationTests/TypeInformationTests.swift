@@ -141,15 +141,10 @@ final class TypeInformationTests: TypeInformationTestCase {
         }
         XCTAssertThrows(try TypeInformation(type: TestEnum.self))
     }
-    
+
+    // swiftlint:disable:next function_body_length
     func testTypeName() throws {
         let genericTypeName = TypeName(TestTypes.Generic<TestTypes.SomeStruct, Int>.self)
-        guard !isLinux() else {
-            print("\(#function) skipped in this platform")
-            print("Parsed name of the first sut: \(String(reflecting: TestTypes.Generic<TestTypes.SomeStruct, Int>.self))")
-            print("Absolute name of the first sut: \(genericTypeName.absoluteName())")
-            return
-        }
         
         XCTAssertEqual(genericTypeName.name, "Generic")
         XCTAssertEqual(genericTypeName.nestedTypeNames.first?.name, "TestTypes")
@@ -158,14 +153,49 @@ final class TypeInformationTests: TypeInformationTestCase {
         XCTAssert(genericTypeName.genericTypeNames.contains(TypeName(Int.self)))
         
         let string = TypeName(String.self)
-        XCTAssert(string.name == "String")
-        XCTAssert(string.definedIn == "Swift")
+        XCTAssertEqual(string.name, "String")
+        XCTAssertEqual(string.definedIn, "Swift")
         XCTAssert(string.nestedTypeNames.isEmpty)
         XCTAssert(string.genericTypeNames.isEmpty)
-        XCTAssert(string.name == string.absoluteName())
+        XCTAssertEqual(string.name, string.absoluteName())
         
         let nsdata = TypeName(NSData.self)
-        XCTAssert(nsdata.definedIn == nsdata.name)
+        #if os(macOS)
+            XCTAssertEqual(nsdata.definedIn, nil)
+            XCTAssertEqual(nsdata.name, "NSData")
+        #else
+            XCTAssertEqual(nsdata.definedIn, "Foundation")
+            XCTAssertEqual(nsdata.name, "NSData")
+        #endif
+
+        let nsString = TypeName(NSString.self)
+        #if os(macOS)
+        XCTAssertEqual(nsString.definedIn, nil)
+        XCTAssertEqual(nsString.name, "NSString")
+        #else
+        XCTAssertEqual(nsString.definedIn, "Foundation")
+        XCTAssertEqual(nsString.name, "NSString")
+        #endif
+
+        let nsURL = TypeName(NSURL.self)
+        #if os(macOS)
+        XCTAssertEqual(nsURL.definedIn, nil)
+        XCTAssertEqual(nsURL.name, "NSURL")
+        #else
+        XCTAssertEqual(nsURL.definedIn, "Foundation")
+        XCTAssertEqual(nsURL.name, "NSURL")
+        #endif
+
+        let nsStringCompare = TypeName(NSString.CompareOptions.self)
+        #if os(macOS)
+        XCTAssertEqual(nsStringCompare.definedIn, "__C")
+        XCTAssertEqual(nsStringCompare.name, "NSStringCompareOptions")
+        #else
+        XCTAssertEqual(nsStringCompare.definedIn, "Foundation")
+        XCTAssertEqual(nsStringCompare.nestedTypeNames.count, 1)
+        XCTAssertEqual(nsStringCompare.nestedTypeNames[0].name, "NSString")
+        XCTAssertEqual(nsStringCompare.name, "CompareOptions")
+        #endif
         
         let jsonEncoder = TypeName(JSONEncoder.self)
         XCTAssert(jsonEncoder.name == String(describing: JSONEncoder.self))

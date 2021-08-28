@@ -33,24 +33,31 @@ public struct TypeName: TypeInformationElement {
     private init(_ parsedTypeName: ParsedTypeName) {
         precondition(!parsedTypeName.isEmpty, "Type name parser parsed empty components")
         var definedIn: String?
-        if let targetName = parsedTypeName.first, targetName.isTargetName {
-            definedIn = targetName.name
+
+        if case let .targetName(name) = parsedTypeName.first {
+            definedIn = name
         }
-        
-        guard let typeName = parsedTypeName.last else {
+
+        // the last typeName element is always our "main" type.
+        guard case let .typeName(mainTypeName, generics) = parsedTypeName.last else {
             fatalError("Something went fundamentally wrong. Failed to get the type name component")
         }
-        
+
+        // everything in between are nested types
         var nestedTypeNames: [TypeName] = []
-        for index in parsedTypeName.indices where index < parsedTypeName.endIndex {
+        for index in parsedTypeName.indices.dropFirst() {
             let nestedParsedTypes = Array(parsedTypeName[parsedTypeName.startIndex ..< index])
-            if nestedParsedTypes.count > 1 { // ignoring targetName component
-                nestedTypeNames.append(.init(nestedParsedTypes))
+
+            // ignoring targetName component
+            if case .targetName = nestedParsedTypes.first, nestedParsedTypes.count == 1 {
+                continue
             }
+
+            nestedTypeNames.append(.init(nestedParsedTypes))
         }
-        let generics = typeName.generics
+
         let genericTypeNames: [TypeName] = generics.isEmpty ? [] : generics.map { .init($0) }
-        self.init(name: typeName.name, definedIn: definedIn, nestedTypeNames: nestedTypeNames, genericTypeNames: genericTypeNames)
+        self.init(name: mainTypeName, definedIn: definedIn, nestedTypeNames: nestedTypeNames, genericTypeNames: genericTypeNames)
     }
 
     /// Initializes a new type name instance
