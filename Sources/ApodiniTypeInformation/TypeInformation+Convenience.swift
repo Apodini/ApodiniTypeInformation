@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ApodiniContext
 
 public extension TypeInformation {
     /// A simplified enum of the `typeInformation`
@@ -141,8 +142,8 @@ public extension TypeInformation {
         case let .repeated(element): return element.unwrapped.typeName
         case let .dictionary(_, value): return value.unwrapped.typeName
         case let .optional(wrappedValue): return wrappedValue.unwrapped.typeName
-        case let .enum(name, _, _): return name
-        case let .object(name, _): return name
+        case let .enum(name, _, _, _): return name
+        case let .object(name, _, _): return name
         case let .reference(referenceKey): return .init(name: referenceKey.rawValue)
         }
     }
@@ -201,22 +202,22 @@ public extension TypeInformation {
     /// Returns object properties if `self` is `.object`, otherwise an empty array
     var objectProperties: [TypeProperty] {
         switch self {
-        case let .object(_, properties): return properties
+        case let .object(_, properties, _): return properties
         default: return objectType?.objectProperties ?? []
         }
     }
     
     /// Returns enum cases if `self` is `.enum`, otherwise an empty array
     var enumCases: [EnumCase] {
-        if case let .enum(_, _, cases) = self {
+        if case let .enum(_, _, cases, _) = self {
             return cases
         }
         return []
     }
     
-    /// Return rawValueType type if `self` is enum
-    var rawValueType: RawValueType? {
-        if case let .enum(_, rawValueType, _) = self {
+    /// Return rawValueType type if `self` is enum and enum has a raw value type.
+    var rawValueType: TypeInformation? {
+        if case let .enum(_, rawValueType, _, _) = self {
             return rawValueType
         }
         return nil
@@ -225,6 +226,19 @@ public extension TypeInformation {
     /// Wrapps a type descriptor as an optional type. If already an optional, returns self
     var asOptional: TypeInformation {
         isOptional ? self : .optional(wrappedValue: self)
+    }
+
+    /// Retrieves the `Context` where parsed Metadata is stored of a ``TypeInformation`` instance.
+    /// Returns nil for cases of ``TypeInformation`` which don't expose Metadata declaration blocks.
+    var context: Context? {
+        switch self {
+        case let .object(_, _, context):
+            return context
+        case let .enum(_, _, _, context):
+            return context
+        default:
+            return nil
+        }
     }
     
     /// Recursively returns all types included in this `typeInformation`, e.g. primitive types, enums, objects
@@ -238,7 +252,7 @@ public extension TypeInformation {
             allTypes += .scalar(key) + value.allTypes()
         case let .optional(wrappedValue):
             allTypes += wrappedValue.allTypes()
-        case let .object(_, properties):
+        case let .object(_, properties, _):
             allTypes += properties.flatMap { $0.type.allTypes() }
         default: break
         }
@@ -294,10 +308,11 @@ public extension TypeInformation {
             return .dictionary(key: key, value: value.referencedProperties())
         case let .optional(wrappedValue):
             return .optional(wrappedValue: wrappedValue.referencedProperties())
-        case let .object(typeName, properties):
+        case let .object(typeName, properties, context):
             return .object(
                 name: typeName,
-                properties: properties.map { $0.referencedType() }
+                properties: properties.map { $0.referencedType() },
+                context: context
             )
         case .reference: fatalError("Attempted to reference a reference")
         }
@@ -331,11 +346,6 @@ public extension TypeInformation {
     /// Returns all distinct objects in `allTypes()`
     func objectTypes() -> [TypeInformation] {
         filter(\.isObject)
-    }
-    
-    /// Returns an enum with string raw value with the given name and cases
-    static func `enum`(name: TypeName, cases: [EnumCase]) -> TypeInformation {
-        .enum(name: name, rawValueType: .string, cases: cases)
     }
 
     /// Returns a reference with the given string key

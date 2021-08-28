@@ -56,7 +56,6 @@ final class InstanceCreatorTests: TypeInformationTestCase {
         student.shop.directions[UUID()] = 0
 
         let studentJSON = try student.toJSON(outputFormatting: [.prettyPrinted])
-        print(try studentJSON.string())
 
         let studentFromJSON = try TestTypes.Student.fromJSON(studentJSON)
         XCTAssertEqual(student, studentFromJSON)

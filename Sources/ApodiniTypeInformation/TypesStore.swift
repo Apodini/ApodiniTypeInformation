@@ -39,7 +39,7 @@ public struct TypesStore {
             let referencedProperties = objectType.objectProperties.map { property -> TypeProperty in
                 .init(name: property.name, type: store(property.type), annotation: property.annotation) // storing potentially referencable properties
             }
-            storage[key.rawValue] = .object(name: objectType.typeName, properties: referencedProperties)
+            storage[key.rawValue] = .object(name: objectType.typeName, properties: referencedProperties, context: objectType.context ?? .init())
         }
         
         return type.asReference(with: key) // referencing the type
@@ -52,7 +52,7 @@ public struct TypesStore {
         }
         
         /// If the stored type is an object, we recursively construct its properties and update the stored
-        if case let .object(name, properties) = stored {
+        if case let .object(name, properties, context) = stored {
             let newProperties = properties.map { property -> TypeProperty in
                 if let propertyReference = property.type.reference {
                     return .init(
@@ -63,7 +63,7 @@ public struct TypesStore {
                 }
                 return property
             }
-            stored = .object(name: name, properties: newProperties)
+            stored = .object(name: name, properties: newProperties, context: context)
         }
         
         switch reference {
