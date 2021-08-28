@@ -27,4 +27,12 @@ class TypeInformationTestCase: XCTestCase {
             expectation.fulfill()
         }
     }
+    
+    func isLinux() -> Bool {
+        #if os(Linux)
+        return true
+        #else
+        return false
+        #endif
+    }
 }

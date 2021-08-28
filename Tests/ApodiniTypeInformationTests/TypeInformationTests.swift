@@ -144,6 +144,12 @@ final class TypeInformationTests: TypeInformationTestCase {
     
     func testTypeName() throws {
         let genericTypeName = TypeName(TestTypes.Generic<TestTypes.SomeStruct, Int>.self)
+        guard !isLinux() else {
+            print("\(#function) skipped in this platform")
+            print("Absolute name of the first sut: \(genericTypeName.absoluteName())")
+            return
+        }
+        
         XCTAssertEqual(genericTypeName.name, "Generic")
         XCTAssertEqual(genericTypeName.nestedTypeNames.first?.name, "TestTypes")
         XCTAssertEqual(genericTypeName.definedIn, "ApodiniTypeInformationTests")
