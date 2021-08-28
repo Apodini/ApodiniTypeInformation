@@ -13,6 +13,29 @@ typealias ParsedTypeName = [ParsedTypeNamePart]
 enum ParsedTypeNamePart: Hashable {
     case targetName(name: String)
     indirect case typeName(name: String, generics: [ParsedTypeName] = [])
+    
+    var name: String {
+        switch self {
+        case let .targetName(name):
+            return name
+        case let .typeName(name, _):
+            return name
+        }
+    }
+    
+    var isTargetName: Bool {
+        if case .targetName = self {
+            return true
+        }
+        return false
+    }
+    
+    var generics: [ParsedTypeName] {
+        if case let .typeName(_, generics) = self {
+            return generics
+        }
+        return []
+    }
 }
 
 class TypeNameParser {

@@ -38,6 +38,8 @@ extension TestTypes {
     enum Direction: String, Codable, Hashable {
         case left
         case right
+        
+        struct SomeInnerType {}
     }
     
     struct Car: Codable, Equatable {

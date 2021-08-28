@@ -8,7 +8,7 @@
 
 import Foundation
 /// A protocol for types that implement by default their type information representation
-public protocol TypeInformationPrimitiveConstructor {
+public protocol TypeInformationDefaultConstructor {
     /// Returns the default type information
     static func construct() -> TypeInformation
 }
