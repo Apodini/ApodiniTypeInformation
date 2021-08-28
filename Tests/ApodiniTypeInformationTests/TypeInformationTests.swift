@@ -146,6 +146,7 @@ final class TypeInformationTests: TypeInformationTestCase {
         let genericTypeName = TypeName(TestTypes.Generic<TestTypes.SomeStruct, Int>.self)
         guard !isLinux() else {
             print("\(#function) skipped in this platform")
+            print("Parsed name of the first sut: \(String(reflecting: TestTypes.Generic<TestTypes.SomeStruct, Int>.self))")
             print("Absolute name of the first sut: \(genericTypeName.absoluteName())")
             return
         }
