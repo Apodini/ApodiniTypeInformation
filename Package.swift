@@ -10,11 +10,10 @@
 
 import PackageDescription
 
+
 enum RuntimeDependency {
     /// contains experimental enum support
     case enumSupport
-    /// Fork which contains several fixes for the linux platform
-    case fork
     /// The regular upstream package
     case standard
 }
@@ -23,24 +22,23 @@ func runtimeDependency(selecting dependency: RuntimeDependency) -> Package.Depen
     switch dependency {
     case .enumSupport:
         return .package(url: "https://github.com/PSchmiedmayer/Runtime.git", .revision("b810847a466ecd1cf65e7f39e6e715734fdc672c"))
-    case .fork:
-        return .package(url: "https://github.com/Supereg/Runtime.git", from: "2.2.3")
     case .standard:
-        return .package(url: "https://github.com/wickwirew/Runtime.git", from: "2.2.2")
+        return .package(url: "https://github.com/wickwirew/Runtime.git", from: "2.2.4")
     }
 }
+
 
 let package = Package(
     name: "ApodiniTypeInformation",
     platforms: [
-        .macOS(.v12)
+        .macOS(.v11)
     ],
     products: [
         .library(name: "ApodiniTypeInformation", targets: ["ApodiniTypeInformation"]),
         .library(name: "TypeInformationMetadata", targets: ["TypeInformationMetadata"])
     ],
     dependencies: [
-        runtimeDependency(selecting: .fork),
+        runtimeDependency(selecting: .standard),
         .package(url: "https://github.com/Apodini/MetadataSystem.git", .upToNextMinor(from: "0.1.0"))
     ],
     targets: [
@@ -51,14 +49,12 @@ let package = Package(
                 .target(name: "TypeInformationMetadata")
             ]
         ),
-
         .target(
             name: "TypeInformationMetadata",
             dependencies: [
                 .product(name: "MetadataSystem", package: "MetadataSystem")
             ]
         ),
-
         .testTarget(
             name: "ApodiniTypeInformationTests",
             dependencies: [
