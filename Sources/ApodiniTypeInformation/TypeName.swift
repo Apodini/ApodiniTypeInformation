@@ -8,34 +8,80 @@
 
 import Foundation
 
+public struct TypeNameComponent: TypeInformationElement {
+    /// Mangled name of the type component
+    public let name: String
+    public let generics: [TypeName]
+
+    public init(name: String, generics: [TypeName] = []) {
+        self.name = name
+        self.generics = generics
+    }
+
+    public var rawValue: String {
+        var result = name
+        if !generics.isEmpty {
+            result += "<\(generics.map { $0.rawValue }.joined(separator: ","))>"
+        }
+        return result
+    }
+}
+
 /// An object that represents names of the types
-public struct TypeName: TypeInformationElement {
+public struct TypeName: TypeInformationElement, RawRepresentable {
+    public var rawValue: String {
+        var result = ""
+        if let definedIn = definedIn {
+            result += definedIn
+        }
+
+        for components in (nestedTypes + rootType) {
+            if !result.isEmpty {
+                result += "."
+            }
+
+            result += components.rawValue
+        }
+
+        return result
+    }
+
     /// Name of the module / target where the type has been defined
     public let definedIn: String?
-    /// Mangled name of the type
-    public let name: String
-    /// Ordered nested types (namespace) where the type with name `name` has been defined
-    public let nestedTypeNames: [TypeName]
-    /// Type names of generic types of the type with name `name`
-    public let genericTypeNames: [TypeName]
-    
-    /// `name` by prepending the mapped `namespacedName` of `nestedTypeNames`
-    ///  - Note: generic type names are ignored. Use `absoluteName(_:_:)` for including generic type names
-    public var namespacedName: String {
-        nestedTypeNames.map { $0.namespacedName }.joined() + name
+
+    /// The root type component. It holds the mangled name and its generic types
+    private let rootType: TypeNameComponent
+
+    /// Ordered nested types (namespace) where the root type is defined.
+    public let nestedTypes: [TypeNameComponent]
+
+    public var mangledName: String {
+        rootType.name
+    }
+
+    public var generics: [TypeName] {
+        rootType.generics
     }
     
     /// Initializes `self` out of `Any.Type`
     public init(_ type: Any.Type) {
-        self.init(TypeNameParser(String(reflecting: type)).parse())
+        self.init(rawValue: String(reflecting: type))
+    }
+
+    public init(rawValue: String) {
+        self.init(TypeNameParser(rawValue).parse())
     }
     
     private init(_ parsedTypeName: ParsedTypeName) {
         precondition(!parsedTypeName.isEmpty, "Type name parser parsed empty components")
+        var parsedTypeName = parsedTypeName
+
         var definedIn: String?
+        var nestedTypeNames: [TypeNameComponent] = []
 
         if case let .targetName(name) = parsedTypeName.first {
             definedIn = name
+            parsedTypeName.removeFirst() // consumed!
         }
 
         // the last typeName element is always our "main" type.
@@ -43,34 +89,38 @@ public struct TypeName: TypeInformationElement {
             fatalError("Something went fundamentally wrong. Failed to get the type name component")
         }
 
-        // everything in between are nested types
-        var nestedTypeNames: [TypeName] = []
-        for index in parsedTypeName.indices.dropFirst() {
-            let nestedParsedTypes = Array(parsedTypeName[parsedTypeName.startIndex ..< index])
+        parsedTypeName.removeLast()
 
-            // ignoring targetName component
-            if case .targetName = nestedParsedTypes.first, nestedParsedTypes.count == 1 {
-                continue
+        // everything in between are nested types
+        for nestedType in parsedTypeName {
+            guard case let .typeName(nestedTypeName, generics) = nestedType else {
+                fatalError("Didn't expect another targetName component in parser result!")
             }
 
-            nestedTypeNames.append(.init(nestedParsedTypes))
+            nestedTypeNames.append(TypeNameComponent(
+                name: nestedTypeName,
+                generics: generics.map { TypeName($0) }
+            ))
         }
 
-        let genericTypeNames: [TypeName] = generics.isEmpty ? [] : generics.map { .init($0) }
-        self.init(name: mainTypeName, definedIn: definedIn, nestedTypeNames: nestedTypeNames, genericTypeNames: genericTypeNames)
+        let rootType = TypeNameComponent(
+            name: mainTypeName,
+            generics: generics.map { TypeName($0) }
+        )
+
+
+        self.init(definedIn: definedIn, rootType: rootType, nestedTypes: nestedTypeNames)
     }
 
     /// Initializes a new type name instance
     /// - Parameters:
-    ///    - name: Mangled name of the type, e.g. `Container<Value>` -> `Container`
     ///    - definedIn: name of the module / target where the type has been defined, `Swift.Int` -> `Swift`
-    ///    - nestedTypeNames: Ordered nested type names (namespaces) where the type with name `name` has been defined
-    ///    - genericTypeNames: Type names of generic types of the type with name `name`
-    public init(name: String, definedIn: String? = nil, nestedTypeNames: [TypeName] = [], genericTypeNames: [TypeName] = []) {
-        self.name = name
+    ///    - rootType: The ``TypeNameComponent`` describing the actual type.
+    ///    - nestedTypes: Array of ``TypeNameComponent``s describing any potentially nested types.
+    public init(definedIn: String?, rootType: TypeNameComponent, nestedTypes: [TypeNameComponent] = []) {
         self.definedIn = definedIn
-        self.nestedTypeNames = nestedTypeNames
-        self.genericTypeNames = genericTypeNames
+        self.rootType = rootType
+        self.nestedTypes = nestedTypes
     }
     
     /// Absolute name of the type. Constructed by joining the absolute names of `nestedTypeNames`, appending `name` and the join
@@ -79,13 +129,69 @@ public struct TypeName: TypeInformationElement {
     ///     - genericsPrefix: Prefix of the first generic type name, defaults to `Of`
     ///     - genericsJoiner: Joiner for generic type names, defaults to `And`
     public func absoluteName(_ genericsPrefix: String = "Of", _ genericsJoiner: String = "And") -> String {
-        var absoluteName = nestedTypeNames.map { $0.absoluteName(genericsPrefix, genericsJoiner) }.joined()
-        absoluteName += name
-        if !genericTypeNames.isEmpty {
-            let generics = genericTypeNames.map { $0.absoluteName(genericsPrefix, genericsJoiner) }.joined(separator: genericsJoiner)
-            absoluteName += "\(genericsPrefix)\(generics)"
+        var absoluteName = ""
+
+        for type in (nestedTypes + rootType) {
+            absoluteName += type.name
+
+            if !type.generics.isEmpty {
+                let generics = rootType.generics
+                    .map { $0.absoluteName(genericsPrefix, genericsJoiner) }
+                    .joined(separator: genericsJoiner)
+                absoluteName += "\(genericsPrefix)\(generics)"
+            }
         }
+
         return absoluteName
+    }
+}
+
+private struct LegacyTypeName: Decodable {
+    private enum CodingKeys: String, CodingKey {
+        case definedIn = "defined-in"
+        case name
+        case nestedTypeNames
+        case genericTypeNames
+    }
+
+    let definedIn: String?
+    let name: String
+    let nestedTypeNames: [LegacyTypeName]
+    let genericTypeNames: [LegacyTypeName]
+
+    func migrateToTypeName() -> TypeName {
+        TypeName(
+            definedIn: definedIn,
+            rootType: TypeNameComponent(
+                name: name,
+                generics: genericTypeNames
+                    .map { $0.migrateToTypeName() }
+            ),
+            nestedTypes: nestedTypeNames
+                .map { type in
+                    TypeNameComponent(
+                        name: type.name,
+                        generics: type.genericTypeNames
+                            .map { $0.migrateToTypeName() }
+                    )
+                }
+        )
+    }
+
+    init(definedIn: String?, name: String, nestedTypeNames: [LegacyTypeName], genericTypeNames: [LegacyTypeName]) {
+        self.definedIn = definedIn
+        self.name = name
+        self.nestedTypeNames = nestedTypeNames
+        self.genericTypeNames = genericTypeNames
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        try definedIn = container.decodeIfPresent(String.self, forKey: .definedIn)
+        try name = container.decode(String.self, forKey: .name)
+        try nestedTypeNames = container.decodeIfPresentOrInitEmpty([LegacyTypeName].self, forKey: .nestedTypeNames)
+        try genericTypeNames = container.decodeIfPresentOrInitEmpty([LegacyTypeName].self, forKey: .genericTypeNames)
     }
 }
 
@@ -93,27 +199,37 @@ public struct TypeName: TypeInformationElement {
 extension TypeName: Codable {
     // MARK: Coding Keys
     private enum CodingKeys: String, CodingKey {
-        case name, definedIn = "defined-in", nestedTypeNames, genericTypeNames
+        case definedIn = "defined-in"
+        case rootComponent
+        case nestedComponents
+
+        // deprecated cases used for backwards compatibility
+        case name
     }
 
     // MARK: - Decodable
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        name = try container.decode(String.self, forKey: .name)
-        definedIn = try container.decodeIfPresent(String.self, forKey: .definedIn)
-        nestedTypeNames = try container.decodeIfPresentOrInitEmpty([TypeName].self, forKey: .nestedTypeNames)
-        genericTypeNames = try container.decodeIfPresentOrInitEmpty([TypeName].self, forKey: .genericTypeNames)
+        guard try container.decodeIfPresent(String.self, forKey: .name) == nil else {
+            // parse legacy format for TypeName encoding
+            try self = LegacyTypeName(from: decoder)
+                .migrateToTypeName()
+            return
+        }
+
+        try definedIn = container.decodeIfPresent(String.self, forKey: .definedIn)
+        try rootType = container.decode(TypeNameComponent.self, forKey: .rootComponent)
+        try nestedTypes = container.decodeIfPresentOrInitEmpty([TypeNameComponent].self, forKey: .nestedComponents)
     }
 
     // MARK: - Encodable
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(name, forKey: .name)
         try container.encodeIfPresent(definedIn, forKey: .definedIn)
-        try container.encodeIfNotEmpty(nestedTypeNames, forKey: .nestedTypeNames)
-        try container.encodeIfNotEmpty(genericTypeNames, forKey: .genericTypeNames)
+        try container.encode(rootType, forKey: .rootComponent)
+        try container.encodeIfNotEmpty(nestedTypes, forKey: .nestedComponents)
     }
 }
 
@@ -121,6 +237,6 @@ extension TypeName: Codable {
 extension TypeName: Comparable {
     /// String comparison of `name`
     public static func < (lhs: TypeName, rhs: TypeName) -> Bool {
-        lhs.name < rhs.name
+        lhs.rawValue < rhs.rawValue
     }
 }

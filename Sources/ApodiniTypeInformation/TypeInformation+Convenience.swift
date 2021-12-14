@@ -144,7 +144,7 @@ public extension TypeInformation {
         case let .optional(wrappedValue): return wrappedValue.unwrapped.typeName
         case let .enum(name, _, _, _): return name
         case let .object(name, _, _): return name
-        case let .reference(referenceKey): return .init(name: referenceKey.rawValue)
+        case let .reference(referenceKey): return .init(rawValue: referenceKey.rawValue)
         }
     }
     
@@ -223,7 +223,7 @@ public extension TypeInformation {
         return nil
     }
     
-    /// Wrapps a type descriptor as an optional type. If already an optional, returns self
+    /// Wraps a type descriptor as an optional type. If already an optional, returns self
     var asOptional: TypeInformation {
         isOptional ? self : .optional(wrappedValue: self)
     }
@@ -288,8 +288,9 @@ public extension TypeInformation {
         case let .optional(wrappedValue):
             return .optional(wrappedValue: wrappedValue.asReference())
         case .enum, .object:
-            return .reference(.init(typeName.name))
-        case .reference: fatalError("Attempted to reference a reference")
+            return .reference(.init(typeName.rawValue))
+        case .reference:
+            fatalError("Attempted to reference a reference")
         }
     }
     

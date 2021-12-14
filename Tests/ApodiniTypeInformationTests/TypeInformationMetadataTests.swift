@@ -57,9 +57,9 @@ final class TypeInformationMetadataTests: TypeInformationTestCase {
             return
         }
 
-        XCTAssertEqual(name.name, "SomeType")
+        XCTAssertEqual(name.mangledName, "SomeType")
         XCTAssertEqual(name.definedIn, "ApodiniTypeInformationTests")
-        XCTAssertEqual(name.genericTypeNames, [])
+        XCTAssertEqual(name.generics, [])
 
         XCTAssertEqual(context.get(valueFor: DescriptionMetadata.self), "This is a Description!")
 
@@ -75,9 +75,9 @@ final class TypeInformationMetadataTests: TypeInformationTestCase {
                     return
                 }
 
-                XCTAssertEqual(name.name, "SubType")
+                XCTAssertEqual(name.mangledName, "SubType")
                 XCTAssertEqual(name.definedIn, "ApodiniTypeInformationTests")
-                XCTAssertEqual(name.genericTypeNames, [])
+                XCTAssertEqual(name.generics, [])
 
                 XCTAssertEqual(context.get(valueFor: DescriptionMetadata.self), "This is a sub Description!")
 

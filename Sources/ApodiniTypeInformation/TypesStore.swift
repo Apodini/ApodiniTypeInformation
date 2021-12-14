@@ -29,7 +29,7 @@ public struct TypesStore {
             return type
         }
         
-        let key = ReferenceKey(type.typeName.name)
+        let key = ReferenceKey(type.typeName.rawValue)
         
         if let enumType = type.enumType { // retrieving the nested enum
             storage[key.rawValue] = enumType
