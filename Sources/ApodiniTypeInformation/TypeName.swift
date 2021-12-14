@@ -17,14 +17,6 @@ public struct TypeNameComponent: TypeInformationElement {
         self.name = name
         self.generics = generics
     }
-
-    public var rawValue: String {
-        var result = name
-        if !generics.isEmpty {
-            result += "<\(generics.map { $0.rawValue }.joined(separator: ","))>"
-        }
-        return result
-    }
 }
 
 /// An object that represents names of the types
@@ -241,13 +233,6 @@ private struct LegacyTypeName: Decodable {
                     )
                 }
         )
-    }
-
-    init(definedIn: String?, name: String, nestedTypeNames: [LegacyTypeName], genericTypeNames: [LegacyTypeName]) {
-        self.definedIn = definedIn
-        self.name = name
-        self.nestedTypeNames = nestedTypeNames
-        self.genericTypeNames = genericTypeNames
     }
 
     init(from decoder: Decoder) throws {
