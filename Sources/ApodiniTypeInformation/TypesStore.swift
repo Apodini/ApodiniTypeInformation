@@ -16,7 +16,18 @@ public struct TypesStore {
     /// Stored references of enums and objects
     /// Properties of objects are recursively stored
     private var storage: [ReferenceKey: TypeInformation]
-    
+
+    /// A collection containing just the keys of the ``TypeStore``.
+    public var keys: Dictionary<ReferenceKey, TypeInformation>.Keys {
+        storage.keys
+    }
+
+    /// A collection containing just the values of the ``TypeStore``.
+    public var values: Dictionary<ReferenceKey, TypeInformation>.Values {
+        storage.values
+    }
+
+
     /// Initializes a store with an empty storage
     public init() {
         storage = [:]

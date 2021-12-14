@@ -96,7 +96,7 @@ public struct TypeName: TypeInformationElement, RawRepresentable {
     ///    - definedIn: name of the module / target where the type has been defined, `Swift.Int` -> `Swift`
     ///    - rootType: The ``TypeNameComponent`` describing the actual type.
     ///    - nestedTypes: Array of ``TypeNameComponent``s describing any potentially nested types.
-    public init(definedIn: String?, rootType: TypeNameComponent, nestedTypes: [TypeNameComponent] = []) {
+    public init(definedIn: String? = nil, rootType: TypeNameComponent, nestedTypes: [TypeNameComponent] = []) {
         self.definedIn = definedIn
         self.rootType = rootType
         self.nestedTypes = nestedTypes
