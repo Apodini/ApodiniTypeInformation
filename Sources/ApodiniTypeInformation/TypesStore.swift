@@ -117,6 +117,8 @@ extension TypesStore: Codable {
     }
 }
 
+extension TypesStore: Hashable {}
+
 extension TypesStore: Sequence {
     public typealias Iterator = Dictionary<ReferenceKey, TypeInformation>.Iterator
 
