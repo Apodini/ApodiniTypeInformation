@@ -26,7 +26,7 @@ final class TypeInformationTests: TypeInformationTestCase {
         XCTAssert(user.property("cars")?.type.dictionaryValue?.isObject == true)
         XCTAssert(user.dictionaryKey == nil)
         XCTAssert(user.dictionaryValue == nil)
-        XCTAssertEqual(user.typeName.absoluteName(), "TestTypesUser")
+        XCTAssertEqual(user.typeName.buildName(), "TestTypesUser")
         XCTAssertEqual(user.property("otherCars")?.type.nestedTypeString, "TestTypesCar")
         XCTAssert(user.property("url")?.type.objectProperties.isEmpty == true)
         XCTAssert(user.enumCases.isEmpty)
@@ -56,7 +56,7 @@ final class TypeInformationTests: TypeInformationTestCase {
         XCTAssert(direction.isContained(in: user))
         XCTAssertEqual(direction.rawValueType, .scalar(.string))
         
-        XCTAssert(!user.sameType(with: direction))
+        XCTAssert(!user.comparingRootType(with: direction))
 
         let data = try user.toJSON()
         let userFromData = try TypeInformation.fromJSON(data)
@@ -65,7 +65,7 @@ final class TypeInformationTests: TypeInformationTestCase {
         let userReference = user.asReference()
         let directionReference = direction.asReference()
         XCTAssert(userReference.isReference)
-        XCTAssert(userReference.sameType(with: directionReference))
+        XCTAssert(userReference.comparingRootType(with: directionReference))
         XCTAssertNotEqual(userReference, directionReference)
     }
     
@@ -140,95 +140,6 @@ final class TypeInformationTests: TypeInformationTestCase {
             case string(String)
         }
         XCTAssertThrows(try TypeInformation(type: TestEnum.self))
-    }
-
-    // swiftlint:disable:next function_body_length
-    func testTypeName() throws {
-        let genericTypeName = TypeName(TestTypes.Generic<TestTypes.SomeStruct, Int>.self)
-        
-        XCTAssertEqual(genericTypeName.name, "Generic")
-        XCTAssertEqual(genericTypeName.nestedTypeNames.first?.name, "TestTypes")
-        XCTAssertEqual(genericTypeName.definedIn, "ApodiniTypeInformationTests")
-        XCTAssertEqual(genericTypeName.absoluteName(), "TestTypesGenericOfTestTypesSomeStructAndInt")
-        XCTAssert(genericTypeName.genericTypeNames.contains(TypeName(Int.self)))
-        
-        let string = TypeName(String.self)
-        XCTAssertEqual(string.name, "String")
-        XCTAssertEqual(string.definedIn, "Swift")
-        XCTAssert(string.nestedTypeNames.isEmpty)
-        XCTAssert(string.genericTypeNames.isEmpty)
-        XCTAssertEqual(string.name, string.absoluteName())
-        
-        let nsdata = TypeName(NSData.self)
-        #if os(macOS)
-            XCTAssertEqual(nsdata.definedIn, nil)
-            XCTAssertEqual(nsdata.name, "NSData")
-        #else
-            XCTAssertEqual(nsdata.definedIn, "Foundation")
-            XCTAssertEqual(nsdata.name, "NSData")
-        #endif
-
-        let nsString = TypeName(NSString.self)
-        #if os(macOS)
-        XCTAssertEqual(nsString.definedIn, nil)
-        XCTAssertEqual(nsString.name, "NSString")
-        #else
-        XCTAssertEqual(nsString.definedIn, "Foundation")
-        XCTAssertEqual(nsString.name, "NSString")
-        #endif
-
-        let nsURL = TypeName(NSURL.self)
-        #if os(macOS)
-        XCTAssertEqual(nsURL.definedIn, nil)
-        XCTAssertEqual(nsURL.name, "NSURL")
-        #else
-        XCTAssertEqual(nsURL.definedIn, "Foundation")
-        XCTAssertEqual(nsURL.name, "NSURL")
-        #endif
-
-        let nsStringCompare = TypeName(NSString.CompareOptions.self)
-        #if os(macOS)
-        XCTAssertEqual(nsStringCompare.definedIn, "__C")
-        XCTAssertEqual(nsStringCompare.name, "NSStringCompareOptions")
-        #else
-        XCTAssertEqual(nsStringCompare.definedIn, "Foundation")
-        XCTAssertEqual(nsStringCompare.nestedTypeNames.count, 1)
-        XCTAssertEqual(nsStringCompare.nestedTypeNames[0].name, "NSString")
-        XCTAssertEqual(nsStringCompare.name, "CompareOptions")
-        #endif
-        
-        let jsonEncoder = TypeName(JSONEncoder.self)
-        XCTAssert(jsonEncoder.name == String(describing: JSONEncoder.self))
-        XCTAssert(jsonEncoder.definedIn == "Foundation")
-        XCTAssert(jsonEncoder.nestedTypeNames.isEmpty)
-        XCTAssert(jsonEncoder.genericTypeNames.isEmpty)
-        
-        let someDictionary = TypeName(Dictionary<Int, String>.self)
-        XCTAssert(someDictionary.name == "Dictionary")
-        XCTAssert(someDictionary.definedIn == "Swift")
-        XCTAssert(someDictionary.nestedTypeNames.isEmpty)
-        XCTAssert(someDictionary.absoluteName("VON", "UND") == "DictionaryVONIntUNDString")
-        XCTAssert(someDictionary.genericTypeNames.equalsIgnoringOrder(to: [TypeName(String.self), TypeName(Int.self)]))
-        
-        let someOptional = TypeName(UUID?.self)
-        XCTAssert(someOptional.name == "Optional")
-        XCTAssert(someOptional.nestedTypeNames.isEmpty)
-        XCTAssert(someOptional.genericTypeNames.contains(TypeName(UUID.self)))
-        
-        let someArray = TypeName([Self].self)
-        XCTAssert(someArray.name == "Array")
-        XCTAssert(someArray.absoluteName("PREFIX") == "ArrayPREFIX\(Self.self)")
-        XCTAssert(someArray.nestedTypeNames.isEmpty)
-        XCTAssert(someArray.genericTypeNames.first == TypeName(Self.self))
-        
-        let null = TypeName(Null.self)
-        XCTAssert(null.name == "Null")
-        XCTAssert(null.definedIn == "ApodiniTypeInformation")
-        
-        let innerTypeName = TypeName(TestTypes.Direction.SomeInnerType.self)
-        XCTAssert(innerTypeName.name == "SomeInnerType")
-        XCTAssert(innerTypeName.absoluteName() == "TestTypesTestTypesDirectionSomeInnerType")
-        XCTAssert(innerTypeName.nestedTypeNames.equalsIgnoringOrder(to: [TypeName(TestTypes.self), TypeName(TestTypes.Direction.self)]))
     }
     
     func testTypeStore() throws {

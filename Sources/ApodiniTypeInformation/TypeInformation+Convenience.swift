@@ -144,22 +144,25 @@ public extension TypeInformation {
         case let .optional(wrappedValue): return wrappedValue.unwrapped.typeName
         case let .enum(name, _, _, _): return name
         case let .object(name, _, _): return name
-        case let .reference(referenceKey): return .init(name: referenceKey.rawValue)
+        case .reference:
+            fatalError("Cannot unwrap `TypeName` for the reference type \(self). Please dereference the type beforehand.")
         }
     }
     
     /// String representation of the type in a `Swift` compliant way, e.g. `User`, `User?`, `[String: User]` or `[User]`
+    /// This computed property results in a fatalError if called for a `.reference`.
     var typeString: String {
         switch self {
         case let .scalar(primitiveType): return primitiveType.description
         case let .repeated(element): return "[\(element.typeString)]"
         case let .dictionary(key, value): return "[\(key.description): \(value.typeString)]"
         case let .optional(wrappedValue): return wrappedValue.typeString + "?"
-        case .enum, .object, .reference: return typeName.absoluteName()
+        case .enum, .object, .reference: return typeName.buildName()
         }
     }
     
     /// Nested type string of this type information
+    /// This computed property results in a fatalError if called for a `.reference`.
     var nestedTypeString: String {
         switch self {
         case .scalar, .enum, .object: return typeString
@@ -171,7 +174,15 @@ public extension TypeInformation {
     }
     
     /// Indicate whether `self` has the same root type with other `typeInformation`
+    /// - Note: This method was replaced with ``comparingRootType(with:)` to more clearly communicate
+    ///     what this method actually does.
+    @available(*, deprecated, renamed: "comparingRootType(with:)")
     func sameType(with typeInformation: TypeInformation) -> Bool {
+        rootType == typeInformation.rootType
+    }
+
+    /// Indicate whether `self` has the same root type with other `typeInformation`
+    func comparingRootType(with typeInformation: TypeInformation) -> Bool {
         rootType == typeInformation.rootType
     }
     
@@ -223,7 +234,7 @@ public extension TypeInformation {
         return nil
     }
     
-    /// Wrapps a type descriptor as an optional type. If already an optional, returns self
+    /// Wraps a type descriptor as an optional type. If already an optional, returns self
     var asOptional: TypeInformation {
         isOptional ? self : .optional(wrappedValue: self)
     }
@@ -288,8 +299,9 @@ public extension TypeInformation {
         case let .optional(wrappedValue):
             return .optional(wrappedValue: wrappedValue.asReference())
         case .enum, .object:
-            return .reference(.init(typeName.name))
-        case .reference: fatalError("Attempted to reference a reference")
+            return .reference(.init(typeName.buildName(componentSeparator: ".", genericsStart: "<", genericsSeparator: ",", genericsDelimiter: ">")))
+        case .reference:
+            fatalError("Attempted to reference a reference")
         }
     }
     

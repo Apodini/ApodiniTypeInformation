@@ -28,8 +28,7 @@ Enter your repository-specific configuration
 
 # ApodiniTypeInformation
 
-[![REUSE Compliance Check](https://github.com/Apodini/ApodiniTypeInformation/actions/workflows/reuseaction.yml/badge.svg)](https://github.com/Apodini/ApodiniTypeInformation/actions/workflows/reuseaction.yml)
-[![Build and Test](https://github.com/Apodini/ApodiniTypeInformation/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/Apodini/ApodiniTypeInformation/actions/workflows/build-and-test.yml)
+[![Build](https://github.com/Apodini/ApodiniTypeInformation/actions/workflows/build.yml/badge.svg)](https://github.com/Apodini/ApodiniTypeInformation/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/Apodini/ApodiniTypeInformation/branch/develop/graph/badge.svg?token=5MMKMPO5NR)](https://codecov.io/gh/Apodini/ApodiniTypeInformation)
 
 This package contains the implementation of a recurisive enum-based `TypeInformation`:

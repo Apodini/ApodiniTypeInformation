@@ -37,7 +37,7 @@ class TypeNameParser {
     /// The resulting string is used as the input for another ``TypeNameParser`` parser.
     private var subParserInput: [Character] = []
     /// Collects all the results of an instantiated sub ``TypeNameParser``.
-    /// Those collect the ``ParsedTypeName`` of all the generic arguments of the currently parsed type name.
+    /// Those collect the ``GenericArgument`` of all the generic arguments of the currently parsed type name.
     private var genericOutput: [ParsedTypeName] = []
 
     /// Captures the current generic argument parsing depth.

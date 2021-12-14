@@ -140,7 +140,7 @@ extension TypeInformation {
         let idType = propertyTypeInfo.genericTypes[1]
         
         let customIDObject: TypeInformation = .object(
-            name: .init(name: String(describing: nestedPropertyType) + "ID"),
+            name: .init(rawValue: String(describing: nestedPropertyType) + "ID"),
             properties: [.init(name: "id", type: .optional(wrappedValue: try .init(for: idType)))],
             context: parseMetadata(for: nestedPropertyType)
         )
