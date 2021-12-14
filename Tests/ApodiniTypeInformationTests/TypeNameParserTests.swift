@@ -100,7 +100,7 @@ final class TypeNameParserTests: TypeInformationTestCase {
         XCTAssertEqual(nsdata.mangledName, "NSData")
         #else
         XCTAssertEqual(nsdata.definedIn, "Foundation")
-        XCTAssertEqual(nsdata.name, "NSData")
+        XCTAssertEqual(nsdata.mangledName, "NSData")
         #endif
 
         let nsString = TypeName(NSString.self)
@@ -109,7 +109,7 @@ final class TypeNameParserTests: TypeInformationTestCase {
         XCTAssertEqual(nsString.mangledName, "NSString")
         #else
         XCTAssertEqual(nsString.definedIn, "Foundation")
-        XCTAssertEqual(nsString.name, "NSString")
+        XCTAssertEqual(nsString.mangledName, "NSString")
         #endif
 
         let nsURL = TypeName(NSURL.self)
@@ -118,7 +118,7 @@ final class TypeNameParserTests: TypeInformationTestCase {
         XCTAssertEqual(nsURL.mangledName, "NSURL")
         #else
         XCTAssertEqual(nsURL.definedIn, "Foundation")
-        XCTAssertEqual(nsURL.name, "NSURL")
+        XCTAssertEqual(nsURL.mangledName, "NSURL")
         #endif
 
         let nsStringCompare = TypeName(NSString.CompareOptions.self)
@@ -127,9 +127,9 @@ final class TypeNameParserTests: TypeInformationTestCase {
         XCTAssertEqual(nsStringCompare.mangledName, "NSStringCompareOptions")
         #else
         XCTAssertEqual(nsStringCompare.definedIn, "Foundation")
-        XCTAssertEqual(nsStringCompare.nestedTypeNames.count, 1)
-        XCTAssertEqual(nsStringCompare.nestedTypeNames[0].name, "NSString")
-        XCTAssertEqual(nsStringCompare.name, "CompareOptions")
+        XCTAssertEqual(nsStringCompare.nestedTypes.count, 1)
+        XCTAssertEqual(nsStringCompare.nestedTypes[0].name, "NSString")
+        XCTAssertEqual(nsStringCompare.mangledName, "CompareOptions")
         #endif
 
         let jsonEncoder = TypeName(JSONEncoder.self)
