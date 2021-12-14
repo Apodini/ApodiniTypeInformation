@@ -84,7 +84,7 @@ final class TypeNameParserTests: TypeInformationTestCase {
         XCTAssertEqual(genericTypeName.mangledName, "Generic")
         XCTAssertEqual(genericTypeName.nestedTypes.first?.name, "TestTypes")
         XCTAssertEqual(genericTypeName.definedIn, "ApodiniTypeInformationTests")
-        XCTAssertEqual(genericTypeName.absoluteName(), "TestTypesGenericOfTestTypesSomeStructAndInt")
+        XCTAssertEqual(genericTypeName.buildName(), "TestTypesGenericOfTestTypesSomeStructAndInt")
         XCTAssert(genericTypeName.generics.contains(TypeName(Int.self)))
 
         let string = TypeName(String.self)
@@ -92,7 +92,7 @@ final class TypeNameParserTests: TypeInformationTestCase {
         XCTAssertEqual(string.definedIn, "Swift")
         XCTAssert(string.nestedTypes.isEmpty)
         XCTAssert(string.generics.isEmpty)
-        XCTAssertEqual(string.mangledName, string.absoluteName())
+        XCTAssertEqual(string.mangledName, string.buildName())
 
         let nsdata = TypeName(NSData.self)
         #if os(macOS)
@@ -142,7 +142,7 @@ final class TypeNameParserTests: TypeInformationTestCase {
         XCTAssert(someDictionary.mangledName == "Dictionary")
         XCTAssert(someDictionary.definedIn == "Swift")
         XCTAssert(someDictionary.nestedTypes.isEmpty)
-        XCTAssert(someDictionary.absoluteName("VON", "UND") == "DictionaryVONIntUNDString")
+        XCTAssert(someDictionary.buildName(genericsStart: "VON", genericsSeparator: "UND") == "DictionaryVONIntUNDString")
         XCTAssert(someDictionary.generics.equalsIgnoringOrder(to: [TypeName(String.self), TypeName(Int.self)]))
 
         let someOptional = TypeName(UUID?.self)
@@ -152,7 +152,7 @@ final class TypeNameParserTests: TypeInformationTestCase {
 
         let someArray = TypeName([Self].self)
         XCTAssert(someArray.mangledName == "Array")
-        XCTAssert(someArray.absoluteName("PREFIX") == "ArrayPREFIX\(Self.self)")
+        XCTAssert(someArray.buildName(genericsStart: "PREFIX") == "ArrayPREFIX\(Self.self)")
         XCTAssert(someArray.nestedTypes.isEmpty)
         XCTAssert(someArray.generics.first == TypeName(Self.self))
 
@@ -162,7 +162,7 @@ final class TypeNameParserTests: TypeInformationTestCase {
 
         let innerTypeName = TypeName(TestTypes.Direction.SomeInnerType.self)
         XCTAssertEqual(innerTypeName.mangledName, "SomeInnerType")
-        XCTAssertEqual(innerTypeName.absoluteName(), "TestTypesDirectionSomeInnerType")
+        XCTAssertEqual(innerTypeName.buildName(), "TestTypesDirectionSomeInnerType")
         XCTAssert(innerTypeName.nestedTypes.equalsIgnoringOrder(to: [TypeNameComponent(name: "TestTypes"), TypeNameComponent(name: "Direction")]))
     }
 

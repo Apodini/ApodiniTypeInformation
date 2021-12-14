@@ -162,8 +162,8 @@ public enum PrimitiveType: String, RawRepresentable, CaseIterable, TypeInformati
     /// Creates a new instance by decoding from the given decoder.
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        if let pritimitiveType = Self(rawValue: try container.decode(String.self).lowercased()) {
-            self = pritimitiveType
+        if let primitiveType = Self(rawValue: try container.decode(String.self).lowercased()) {
+            self = primitiveType
         } else {
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Failed to decode \(Self.self)")
         }

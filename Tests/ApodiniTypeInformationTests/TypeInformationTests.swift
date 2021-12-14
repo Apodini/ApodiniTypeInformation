@@ -26,7 +26,7 @@ final class TypeInformationTests: TypeInformationTestCase {
         XCTAssert(user.property("cars")?.type.dictionaryValue?.isObject == true)
         XCTAssert(user.dictionaryKey == nil)
         XCTAssert(user.dictionaryValue == nil)
-        XCTAssertEqual(user.typeName.absoluteName(), "TestTypesUser")
+        XCTAssertEqual(user.typeName.buildName(), "TestTypesUser")
         XCTAssertEqual(user.property("otherCars")?.type.nestedTypeString, "TestTypesCar")
         XCTAssert(user.property("url")?.type.objectProperties.isEmpty == true)
         XCTAssert(user.enumCases.isEmpty)
@@ -56,7 +56,7 @@ final class TypeInformationTests: TypeInformationTestCase {
         XCTAssert(direction.isContained(in: user))
         XCTAssertEqual(direction.rawValueType, .scalar(.string))
         
-        XCTAssert(!user.sameType(with: direction))
+        XCTAssert(!user.comparingRootType(with: direction))
 
         let data = try user.toJSON()
         let userFromData = try TypeInformation.fromJSON(data)
@@ -65,7 +65,7 @@ final class TypeInformationTests: TypeInformationTestCase {
         let userReference = user.asReference()
         let directionReference = direction.asReference()
         XCTAssert(userReference.isReference)
-        XCTAssert(userReference.sameType(with: directionReference))
+        XCTAssert(userReference.comparingRootType(with: directionReference))
         XCTAssertNotEqual(userReference, directionReference)
     }
     
@@ -154,23 +154,5 @@ final class TypeInformationTests: TypeInformationTestCase {
         XCTAssertEqual(result, typeInformation)
         // TypesStore only stores complex types and enums
         XCTAssertEqual(store.store(.scalar(.string)), .scalar(.string))
-    }
-
-    func testTypeNameComparisonWithReference() throws {
-        let userInformation = try TypeInformation(type: TestTypes.User.self)
-        let studentInformation = try TypeInformation(type: TestTypes.Student.self)
-
-        let referencedUser = userInformation.asReference()
-        let referencedStudent = studentInformation.asReference()
-
-        XCTAssertNotEqual(userInformation.typeName, studentInformation.typeName)
-
-        XCTAssertEqual(userInformation.typeName, referencedUser.typeName)
-        XCTAssertNotEqual(userInformation.typeName, referencedStudent.typeName)
-
-        XCTAssertNotEqual(studentInformation.typeName, referencedUser.typeName)
-        XCTAssertEqual(studentInformation.typeName, referencedStudent.typeName)
-
-        XCTAssertNotEqual(referencedUser.typeName, referencedStudent.typeName)
     }
 }

@@ -66,10 +66,6 @@ extension TypeInformation: Hashable {
 
     /// Returns with lhs is equal to rhs
     public static func == (lhs: TypeInformation, rhs: TypeInformation) -> Bool {
-        if !lhs.sameType(with: rhs) {
-            return false
-        }
-        
         switch (lhs, rhs) {
         case let (.scalar(lhsPrimitiveType), .scalar(rhsPrimitiveType)):
             return lhsPrimitiveType == rhsPrimitiveType

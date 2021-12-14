@@ -15,7 +15,7 @@ import Foundation
 public struct TypesStore {
     /// Stored references of enums and objects
     /// Properties of objects are recursively stored
-    public var storage: [String: TypeInformation]
+    private var storage: [ReferenceKey: TypeInformation]
     
     /// Initializes a store with an empty storage
     public init() {
@@ -28,36 +28,47 @@ public struct TypesStore {
         guard type.isReferencable else {
             return type
         }
-        
-        let key = ReferenceKey(type.typeName.rawValue)
+
+        let reference = type.asReference()
+        guard let key = reference.referenceKey else {
+            fatalError("Entered irrecoverable state. ReferenceKey wasn't available after creating type reference!")
+        }
         
         if let enumType = type.enumType { // retrieving the nested enum
-            storage[key.rawValue] = enumType
-        }
-        
-        if let objectType = type.objectType { // retrieving the nested object
+            storage[key] = enumType
+        } else if let objectType = type.objectType { // retrieving the nested object
             let referencedProperties = objectType.objectProperties.map { property -> TypeProperty in
-                .init(name: property.name, type: store(property.type), annotation: property.annotation) // storing potentially referencable properties
+                TypeProperty(
+                    name: property.name,
+                    type: store(property.type), // storing potentially referencable properties
+                    annotation: property.annotation
+                )
             }
-            storage[key.rawValue] = .object(name: objectType.typeName, properties: referencedProperties, context: objectType.context ?? .init())
+
+            storage[key] = .object(
+                name: objectType.typeName,
+                properties: referencedProperties,
+                context: objectType.context ?? .init()
+            )
         }
         
-        return type.asReference(with: key) // referencing the type
+        return reference
     }
     
     /// Constructs a type from a reference
-    public mutating func construct(from reference: TypeInformation) -> TypeInformation {
-        guard let referenceKey = reference.referenceKey, var stored = storage[referenceKey.rawValue] else {
+    public func construct(from reference: TypeInformation) -> TypeInformation {
+        guard let referenceKey = reference.referenceKey,
+              var stored = storage[referenceKey] else {
             return reference
         }
         
         /// If the stored type is an object, we recursively construct its properties and update the stored
         if case let .object(name, properties, context) = stored {
             let newProperties = properties.map { property -> TypeProperty in
-                if let propertyReference = property.type.reference {
-                    return .init(
+                if property.type.reference != nil {
+                    return TypeProperty(
                         name: property.name,
-                        type: property.type.construct(from: propertyReference, in: &self),
+                        type: property.type.construct(in: self),
                         annotation: property.annotation
                     )
                 }
@@ -65,56 +76,70 @@ public struct TypesStore {
             }
             stored = .object(name: name, properties: newProperties, context: context)
         }
-        
-        switch reference {
-        /// If the reference is at root, means the stored object has either been an object or enum -> return directly
-        case .reference:
+
+        // If the reference is at root, means the stored object has either been an object or enum -> return directly
+        if case .reference = reference {
             return stored
-        /// otherwise the stored object has been nested -> construct recursively
-        case let .repeated(element):
-            return .repeated(element: element.construct(from: reference, in: &self))
-        case let .dictionary(key, value):
-            return .dictionary(key: key, value: value.construct(from: reference, in: &self))
-        case let .optional(wrappedValue):
-            return .optional(wrappedValue: wrappedValue.construct(from: reference, in: &self))
-        default:
-            fatalError("Encountered an invalid reference \(reference)")
         }
+
+        // otherwise the stored object has been nested -> construct recursively
+        return reference.construct(in: self)
     }
 }
 
 // MARK: - TypeInformation + TypesStore support
-fileprivate extension TypeInformation {
-    /// Wraps the element into a reference, e.g. .repeated(User) -> .repeated(.reference(User)) after all properties of user have been stored
-    func asReference(with key: ReferenceKey) -> TypeInformation {
-        switch self {
-        case let .repeated(element):
-            return .repeated(element: element.asReference(with: key))
-        case let .dictionary(dictionaryKey, value):
-            return .dictionary(key: dictionaryKey, value: value.asReference(with: key))
-        case let .optional(wrappedValue):
-            return .optional(wrappedValue: wrappedValue.asReference(with: key))
-        case .enum, .object:
-            return .reference(key)
-        default:
-            fatalError("Attempted to create a reference from a non referencable type")
-        }
-    }
-    
+private extension TypeInformation {
     /// Used to construct properties of object or enum types recursively
-    func construct(from reference: TypeInformation, in store: inout TypesStore) -> TypeInformation {
+    func construct(in store: TypesStore) -> TypeInformation {
         switch self {
         case let .repeated(element):
-            return .repeated(element: element.construct(from: reference, in: &store))
+            return .repeated(element: element.construct(in: store))
         case let .dictionary(key, value):
-            return .dictionary(key: key, value: value.construct(from: reference, in: &store))
+            return .dictionary(key: key, value: value.construct(in: store))
         case let .optional(wrappedValue):
-            return .optional(wrappedValue: wrappedValue.construct(from: reference, in: &store))
+            return .optional(wrappedValue: wrappedValue.construct(in: store))
         // initial reference has been recursively deconstructed until here -> construct from self
         case .reference:
             return store.construct(from: self)
         default:
             fatalError("Attempted to construct a non referencable type")
         }
+    }
+}
+
+extension TypesStore: Codable {
+    public init(from decoder: Decoder) throws {
+        try storage = .init(from: decoder)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        try storage.encode(to: encoder)
+    }
+}
+
+extension TypesStore: Sequence {
+    public typealias Iterator = Dictionary<ReferenceKey, TypeInformation>.Iterator
+
+    public func makeIterator() -> Iterator {
+        storage.makeIterator()
+    }
+}
+
+extension TypesStore: Collection {
+    public typealias Index = Dictionary<ReferenceKey, TypeInformation>.Index
+    public typealias Element = Dictionary<ReferenceKey, TypeInformation>.Element
+
+    public var startIndex: Index {
+        storage.startIndex
+    }
+    public var endIndex: Index {
+        storage.endIndex
+    }
+    public subscript(position: Index) -> Element {
+        storage[position]
+    }
+
+    public func index(after index: Index) -> Index {
+        storage.index(after: index)
     }
 }
