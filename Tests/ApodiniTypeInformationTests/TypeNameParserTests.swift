@@ -166,6 +166,7 @@ final class TypeNameParserTests: TypeInformationTestCase {
         XCTAssert(innerTypeName.nestedTypes.equalsIgnoringOrder(to: [TypeNameComponent(name: "TestTypes"), TypeNameComponent(name: "Direction")]))
     }
 
+    // swiftlint:disable:next function_body_length
     func testLegacyTypeNameDecoding() throws {
         // describes ApodiniTypeInformationTests.TestTypes.Generic<ApodiniTypeInformationTests.TestTypes.SomeStruct,Swift.String>.Asdf<Swift.Int>
         let legacyEncodedString = """
@@ -213,7 +214,7 @@ final class TypeNameParserTests: TypeInformationTestCase {
                                   }
                                   """
 
-        let typeName = try JSONDecoder().decode(TypeName.self, from: legacyEncodedString.data(using: .utf8)!)
+        let typeName = try JSONDecoder().decode(TypeName.self, from: XCTUnwrap(legacyEncodedString.data(using: .utf8)))
 
         XCTAssertEqual(
             typeName,
