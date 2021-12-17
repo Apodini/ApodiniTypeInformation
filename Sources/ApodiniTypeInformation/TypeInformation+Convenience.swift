@@ -11,7 +11,7 @@ import ApodiniContext
 
 public extension TypeInformation {
     /// A simplified enum of the `typeInformation`
-    enum RootType: String, CustomStringConvertible {
+    enum RootType: String, CustomStringConvertible, Codable {
         case scalar
         case repeated
         case dictionary
