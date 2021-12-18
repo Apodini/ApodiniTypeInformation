@@ -120,11 +120,20 @@ private extension TypeInformation {
 
 extension TypesStore: Codable {
     public init(from decoder: Decoder) throws {
-        try storage = .init(from: decoder)
+        try storage = [String: TypeInformation](from: decoder)
+            .map { (ReferenceKey(rawValue: $0.key), $0.value) }
+            .reduce(into: [:]) { result, element in
+                result[element.0] = element.1
+            }
     }
 
     public func encode(to encoder: Encoder) throws {
-        try storage.encode(to: encoder)
+        try storage
+            .map { ($0.key.rawValue, $0.value) }
+            .reduce(into: [String: TypeInformation]()) { result, element in
+                result[element.0] = element.1
+            }
+            .encode(to: encoder)
     }
 }
 

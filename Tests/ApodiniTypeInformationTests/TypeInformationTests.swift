@@ -155,4 +155,43 @@ final class TypeInformationTests: TypeInformationTestCase {
         // TypesStore only stores complex types and enums
         XCTAssertEqual(store.store(.scalar(.string)), .scalar(.string))
     }
+
+    func testTypeStoreCodable() throws {
+        let encoded = """
+                      {
+                        "CategoryStatus" : {
+                          "enum" : {
+                            "rawValueType" : {
+                              "scalar" : "String"
+                            },
+                            "cases" : [
+                              {
+                                "name" : "available",
+                                "rawValue" : "available"
+                              },
+                              {
+                                "name" : "unavailable",
+                                "rawValue" : "unavailable"
+                              }
+                            ],
+                            "typeName" : {
+                              "defined-in" : "QONECTIQV1",
+                              "rootComponent" : {
+                                "name" : "CategoryStatus"
+                              }
+                            }
+                          }
+                        }
+                      }
+                      """
+
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let decoder = JSONDecoder()
+
+        // swiftlint:disable:next force_unwrapping
+        let typeStore = try decoder.decode(TypesStore.self, from: encoded.data(using: .utf8)!)
+        let reencoded = try encoder.encode(typeStore).string()
+        XCTAssertEqual(reencoded, encoded)
+    }
 }

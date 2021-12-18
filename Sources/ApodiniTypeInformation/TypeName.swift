@@ -9,6 +9,11 @@
 import Foundation
 
 public struct TypeNameComponent: TypeInformationElement {
+    private enum CodingKeys: String, CodingKey {
+        case name
+        case generics
+    }
+
     /// Mangled name of the type component
     public let name: String
     public let generics: [TypeName]
@@ -16,6 +21,20 @@ public struct TypeNameComponent: TypeInformationElement {
     public init(name: String, generics: [TypeName] = []) {
         self.name = name
         self.generics = generics
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        try name = container.decode(String.self, forKey: .name)
+        try generics = container.decodeIfPresentOrInitEmpty([TypeName].self, forKey: .generics)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(name, forKey: .name)
+        try container.encodeIfNotEmpty(generics, forKey: .generics)
     }
 }
 
