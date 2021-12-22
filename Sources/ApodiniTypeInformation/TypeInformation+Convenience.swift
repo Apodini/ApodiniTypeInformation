@@ -301,7 +301,7 @@ public extension TypeInformation {
         case .enum, .object:
             return .reference(.init(typeName.buildName(componentSeparator: ".", genericsStart: "<", genericsSeparator: ",", genericsDelimiter: ">")))
         case .reference:
-            fatalError("Attempted to reference a reference")
+            return self
         }
     }
     
@@ -326,7 +326,8 @@ public extension TypeInformation {
                 properties: properties.map { $0.referencedType() },
                 context: context
             )
-        case .reference: fatalError("Attempted to reference a reference")
+        case .reference:
+            return self
         }
     }
     
