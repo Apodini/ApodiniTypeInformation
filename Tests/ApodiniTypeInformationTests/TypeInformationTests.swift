@@ -192,6 +192,8 @@ final class TypeInformationTests: TypeInformationTestCase {
         // swiftlint:disable:next force_unwrapping
         let typeStore = try decoder.decode(TypesStore.self, from: encoded.data(using: .utf8)!)
         let reencoded = try encoder.encode(typeStore).string()
-        XCTAssertEqual(reencoded, encoded)
+        // swiftlint:disable:next force_unwrapping
+        let typeStore0 = try decoder.decode(TypesStore.self, from: reencoded.data(using: .utf8)!)
+        XCTAssertEqual(typeStore, typeStore0)
     }
 }
