@@ -148,9 +148,10 @@ final class TypeInformationTests: TypeInformationTestCase {
         var store = TypesStore()
         
         let reference = store.store(typeInformation) // storing and retrieving a reference
+        XCTAssert(reference.reference != nil)
 
         let result = store.construct(from: reference) // reconstructing type from the reference
-        
+
         XCTAssertEqual(result, typeInformation)
         // TypesStore only stores complex types and enums
         XCTAssertEqual(store.store(.scalar(.string)), .scalar(.string))
