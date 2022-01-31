@@ -10,6 +10,21 @@ import XCTest
 @testable import ApodiniTypeInformation
 
 final class TypeNameParserTests: TypeInformationTestCase {
+    struct Name {
+        var test: String
+    }
+
+    func testIterator() {
+        let name = TypeName(Name.self)
+
+        var result: String = ""
+        for component in name {
+            result += "." + component.name
+        }
+
+        XCTAssertEqual(result, ".TypeNameParserTests.Name")
+    }
+
     func testSimpleType() {
         XCTAssertEqual(
             TypeNameParser("SomeTarget.TestType1.TestType2").parse(),

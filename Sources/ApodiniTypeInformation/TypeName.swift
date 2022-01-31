@@ -222,6 +222,19 @@ extension TypeName: Comparable {
     }
 }
 
+// MARK: - Sequence
+extension TypeName: Sequence {
+    public typealias Iterator = Array<TypeNameComponent>.Iterator
+
+    public func makeIterator() -> Iterator {
+        var components: [TypeNameComponent] = nestedTypes
+        components.append(TypeNameComponent(name: mangledName, generics: generics))
+
+        return components.makeIterator()
+    }
+}
+
+
 private struct LegacyTypeName: Decodable {
     private enum CodingKeys: String, CodingKey {
         case definedIn = "defined-in"
