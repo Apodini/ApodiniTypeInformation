@@ -196,5 +196,12 @@ final class TypeInformationTests: TypeInformationTestCase {
         // swiftlint:disable:next force_unwrapping
         let typeStore0 = try decoder.decode(TypesStore.self, from: reencoded.data(using: .utf8)!)
         XCTAssertEqual(typeStore, typeStore0)
+
+        for (key, type) in typeStore {
+            XCTAssertEqual(key, ReferenceKey("CategoryStatus"))
+            XCTAssertEqual(type.isEnum, true)
+            XCTAssertEqual(type.enumCases.count, 2)
+            XCTAssertEqual(type.rawValueType, .scalar(.string))
+        }
     }
 }
