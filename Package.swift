@@ -39,7 +39,7 @@ let package = Package(
     ],
     dependencies: [
         runtimeDependency(selecting: .standard),
-        .package(url: "https://github.com/Apodini/MetadataSystem.git", .upToNextMinor(from: "0.1.0"))
+        .package(url: "https://github.com/Apodini/MetadataSystem.git", .upToNextMinor(from: "0.1.2"))
     ],
     targets: [
         .target(
