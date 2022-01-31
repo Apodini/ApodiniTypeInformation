@@ -60,6 +60,15 @@ extension TypeProperty: Codable {
         case annotation
         case context
     }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        name = try container.decode(String.self, forKey: .name)
+        type = try container.decode(TypeInformation.self, forKey: .type)
+        annotation = try container.decodeIfPresent(String.self, forKey: .annotation)
+        context = try container.decodeIfPresent(Context.self, forKey: .context) ?? Context()
+    }
 }
 
 extension TypeProperty: Hashable {

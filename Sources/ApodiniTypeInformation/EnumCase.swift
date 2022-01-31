@@ -42,3 +42,19 @@ public struct EnumCase: TypeInformationElement {
             && lhs.rawValue == rhs.rawValue
     }
 }
+
+extension EnumCase: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case name
+        case rawValue
+        case context
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        name = try container.decode(String.self, forKey: .name)
+        rawValue = try container.decode(String.self, forKey: .rawValue)
+        context = try container.decodeIfPresent(Context.self, forKey: .context) ?? Context()
+    }
+}
