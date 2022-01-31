@@ -14,17 +14,31 @@ public struct EnumCase: TypeInformationElement {
     public let name: String
     /// Raw value of the case
     public let rawValue: String
+    /// Any `Context` information associated with the enum case.
+    public let context: Context
     
     /// Initializes self out of a `name`
     ///  - Note: `rawValue` is set equal to `name`
-    public init(_ name: String) {
+    public init(_ name: String, context: Context = Context()) {
         self.name = name
         self.rawValue = name
+        self.context = context
     }
     
     /// Initializes a new instance
-    public init(_ name: String, rawValue: String) {
+    public init(_ name: String, rawValue: String, context: Context = Context()) {
         self.name = name
         self.rawValue = rawValue
+        self.context = context
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(rawValue)
+    }
+
+    public static func == (lhs: EnumCase, rhs: EnumCase) -> Bool {
+        lhs.name == rhs.name
+            && lhs.rawValue == rhs.rawValue
     }
 }

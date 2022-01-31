@@ -21,9 +21,11 @@ public struct TypeProperty {
     /// Name of the property
     public let name: String
     /// Type of the property
-    public let type: TypeInformation
+    public private(set) var type: TypeInformation
     /// Annotation of the property, e.g. `@Field` of Fluent property
     public let annotation: String?
+    /// Any `Context` information associated with the property.
+    public let context: Context
 
     /// Necessity of a property
     public var necessity: Necessity {
@@ -31,27 +33,43 @@ public struct TypeProperty {
     }
     
     /// Initializes a new `TypeProperty` instance
-    public init(name: String, type: TypeInformation, annotation: String? = nil) {
+    public init(name: String, type: TypeInformation, annotation: String? = nil, context: Context = Context()) {
         self.name = name
         self.type = type
         self.annotation = annotation
+        self.context = context
     }
     
     /// Returns a version of self where the type is a reference
     public func referencedType() -> TypeProperty {
         .init(name: name, type: type.asReference(), annotation: annotation)
     }
+
+    /// Dereference the `TypeInformation` of the property.
+    /// - Parameter typeStore: The `TypeStore` to contact
+    public mutating func dereference(from typeStore: TypesStore) {
+        type = typeStore.construct(from: type)
+    }
 }
 
 extension TypeProperty: Codable {
     // MARK: Private Inner Types
     private enum CodingKeys: String, CodingKey {
-        case name, type, annotation
+        case name
+        case type
+        case annotation
+        case context
     }
 }
 
 extension TypeProperty: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(type)
+    }
+
     public static func == (lhs: TypeProperty, rhs: TypeProperty) -> Bool {
-        lhs.name == rhs.name && lhs.type == rhs.type
+        lhs.name == rhs.name
+            && lhs.type == rhs.type
     }
 }
