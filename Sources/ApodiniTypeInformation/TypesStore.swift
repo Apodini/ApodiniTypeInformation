@@ -59,12 +59,10 @@ public struct TypesStore {
                 fatalError("Entered irrecoverable state. ReferenceKey wasn't available after creating type reference!")
             }
 
-            let referencedProperties = properties.map { property in
-                TypeProperty(
-                    name: property.name,
-                    type: store(property.type), // storing potentially referencable properties
-                    annotation: property.annotation
-                )
+            let referencedProperties = properties.map { property -> TypeProperty in
+                var property = property
+                property.reference(into: &self)
+                return property
             }
 
             storage[key] = .object(name: name, properties: referencedProperties, context: context)
@@ -88,12 +86,10 @@ public struct TypesStore {
         case .enum:
             return type
         case let .object(name, properties, context):
-            let dereferencedProperties = properties.map { property in
-                TypeProperty(
-                    name: property.name,
-                    type: construct(from: property.type),
-                    annotation: property.annotation
-                )
+            let dereferencedProperties = properties.map { property -> TypeProperty in
+                var property = property
+                property.dereference(from: self)
+                return property
             }
 
             return .object(name: name, properties: dereferencedProperties, context: context)

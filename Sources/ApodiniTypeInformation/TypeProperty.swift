@@ -45,6 +45,12 @@ public struct TypeProperty {
         .init(name: name, type: type.asReference(), annotation: annotation)
     }
 
+    /// Creates and stores a `.reference` of the `TypeInformation` into the desired `TypeStore`.
+    /// - Parameter typeStore: The `TypeStore` to contact
+    public mutating func reference(into typeStore: inout TypesStore) {
+        type = typeStore.store(type)
+    }
+
     /// Dereference the `TypeInformation` of the property.
     /// - Parameter typeStore: The `TypeStore` to contact
     public mutating func dereference(from typeStore: TypesStore) {
