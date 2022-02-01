@@ -99,11 +99,11 @@ extension TypeInformation {
     }
     
     private enum EnumKeys: String, CodingKey {
-        case typeName, rawValueType, cases
+        case typeName, rawValueType, cases, context
     }
     
     private enum ObjectKeys: String, CodingKey {
-        case typeName, properties
+        case typeName, properties, context
     }
     
     /// Encodes self into the given encoder.
@@ -119,15 +119,17 @@ extension TypeInformation {
             try dictionaryContainer.encode(key, forKey: .key)
             try dictionaryContainer.encode(value, forKey: .value)
         case let .optional(wrappedValue): try container.encode(wrappedValue, forKey: .optional)
-        case let .enum(name, rawValue, cases, _):
+        case let .enum(name, rawValue, cases, context):
             var enumContainer = container.nestedContainer(keyedBy: EnumKeys.self, forKey: .enum)
             try enumContainer.encode(name, forKey: .typeName)
             try enumContainer.encodeIfPresent(rawValue, forKey: .rawValueType)
             try enumContainer.encode(cases, forKey: .cases)
-        case let .object(name, properties, _):
+            try enumContainer.encode(context, forKey: .context)
+        case let .object(name, properties, context):
             var objectContainer = container.nestedContainer(keyedBy: ObjectKeys.self, forKey: .object)
             try objectContainer.encode(name, forKey: .typeName)
             try objectContainer.encodeIfNotEmpty(properties, forKey: .properties)
+            try objectContainer.encode(context, forKey: .context)
         case let .reference(key):
             try container.encode(key, forKey: .reference)
         }
@@ -152,13 +154,15 @@ extension TypeInformation {
             let name = try enumContainer.decode(TypeName.self, forKey: .typeName)
             let rawValueType = try enumContainer.decodeIfPresent(TypeInformation.self, forKey: .rawValueType)
             let cases = try enumContainer.decode([EnumCase].self, forKey: .cases)
-            self = .enum(name: name, rawValueType: rawValueType, cases: cases, context: .init())
+            let context = try enumContainer.decodeIfPresent(Context.self, forKey: .context) ?? Context()
+
+            self = .enum(name: name, rawValueType: rawValueType, cases: cases, context: context)
         case .object:
             let objectContainer = try container.nestedContainer(keyedBy: ObjectKeys.self, forKey: .object)
             self = .object(
                 name: try objectContainer.decode(TypeName.self, forKey: .typeName),
                 properties: try objectContainer.decodeIfPresentOrInitEmpty([TypeProperty].self, forKey: .properties),
-                context: .init()
+                context: try objectContainer.decodeIfPresent(Context.self, forKey: .context) ?? Context()
             )
         case .reference: self = .reference(try container.decode(ReferenceKey.self, forKey: .reference))
         default: throw DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "Failed to decode TypeInformation"))
