@@ -42,7 +42,12 @@ public struct TypeProperty {
     
     /// Returns a version of self where the type is a reference
     public func referencedType() -> TypeProperty {
-        .init(name: name, type: type.asReference(), annotation: annotation)
+        .init(
+            name: name,
+            type: type.asReference(),
+            annotation: annotation,
+            context: context
+        )
     }
 
     /// Creates and stores a `.reference` of the `TypeInformation` into the desired `TypeStore`.
