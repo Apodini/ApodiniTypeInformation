@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    
+    <title>TypeInformation| Documentation</title>
+    
+    <link rel="icon"       href="../../../favicon.ico" />
+    <link rel="mask-icon"  href="../../../favicon.svg" color="#333333" />
+    <link rel='stylesheet' href='../../../css/site.css' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/highlight.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="doc-topic">
+        <nav role="navigation" class="nav documentation-nav">
+  <div class="nav__wrapper">
+    <div class="nav__background"></div>
+    <div class="nav-content">
+      <div class="nav-title">
+        <span class="nav-title-link inactive">Documentation</span>
+      </div>
+      <div class="nav-menu">
+        <div class="nav-menu-tray">
+          <ul class="nav-menu-items hierarchy">
+            
+              <li class="nav-menu-item hierarchy-item">
+                
+                
+                  <a href="../index.html" class="item">ApodiniTypeInformation</a>
+                
+              </li>
+            
+              <li class="nav-menu-item hierarchy-item">
+                
+                  <span class="current item">TypeInformation</span>
+                
+                
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main id="main" role="main" class="main">
+  <div class="topictitle">
+  <span class="eyebrow">Enumeration</span>
+  <h1 class="title">TypeInformation</h1>
+</div>
+
+  <div class="container content-grid">
+  <div class="description">
+    <div class="abstract content">
+      No overview available.
+    </div>
+  </div>
+  
+  <!-- The sidebar once we have one: <div class="summary"></div> -->
+  
+  <div class="primary-content">
+    <section id='declaration' class='declaration'>
+  <h2>Declaration</h2>
+  <div class='declaration-group'>
+    <pre class='source indented'><code><span class='token-keyword'>enum</span> <span class='token-identifier'>TypeInformation</span></code></pre>
+  </div>
+</section>
+
+  </div>
+</div>
+
+  
+  <section id='topics' class='contenttable alt-light'>
+  <div class='container'>
+    <h2 class='title'>Topics</h2>
+
+    
+      <div class="row contenttable-section">
+        <div class="col section-title large-3 medium-3 small-12">
+          <h3 class="title">Enumeration Cases</h3>
+        </div>
+  
+        <div class="col section-content large-9 medium-9 small-12">
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/dictionary(key:value:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>case</span><span class='decorator empty-token'> </span><span class='identifier'>dictionary</span><span class='decorator'>(</span><span class='decorator'>key</span><span class='decorator'>: </span><span class='decorator'>PrimitiveType</span><span class='decorator'>, </span><span class='decorator'>value</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>)</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A dictionary with primitive keys and <code>TypeInformation</code> values</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/enum(name:rawvaluetype:cases:context:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>case</span><span class='decorator empty-token'> </span><span class='identifier'>`enum`</span><span class='decorator'>(</span><span class='decorator'>name</span><span class='decorator'>: </span><span class='decorator'>TypeName</span><span class='decorator'>, </span><span class='decorator'>rawValueType</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>?, </span><span class='decorator'>cases</span><span class='decorator'>: [</span><span class='decorator'>EnumCase</span><span class='decorator'>], </span><span class='decorator'>context</span><span class='decorator'>: </span><span class='decorator'>Context</span><span class='decorator'>)</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">An enum type with <code>String</code> cases. The <code>Context</code> captures any Metadata Declarations, if the analyzed type provides Metadata Declarations by conforming to <code>StaticContentMetadataBlock</code>.</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/object(name:properties:context:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>case</span><span class='decorator empty-token'> </span><span class='identifier'>object</span><span class='decorator'>(</span><span class='decorator'>name</span><span class='decorator'>: </span><span class='decorator'>TypeName</span><span class='decorator'>, </span><span class='decorator'>properties</span><span class='decorator'>: [</span><span class='decorator'>TypeProperty</span><span class='decorator'>], </span><span class='decorator'>context</span><span class='decorator'>: </span><span class='decorator'>Context</span><span class='decorator'>)</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">An object type with properties containing a <code>TypeInformation</code> and a name. The <code>Context</code> captures any Metadata Declarations, if the analyzed type provides Metadata Declarations by conforming to <code>StaticContentMetadataBlock</code>.</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/optional(wrappedvalue:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>case</span><span class='decorator empty-token'> </span><span class='identifier'>optional</span><span class='decorator'>(</span><span class='decorator'>wrappedValue</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>)</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">An optional type with <code>TypeInformation</code> wrapped values</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/reference(_:)-swift.enum.case.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>case</span><span class='decorator empty-token'> </span><span class='identifier'>reference</span><span class='decorator'>(</span><span class='decorator'>ReferenceKey</span><span class='decorator'>)</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A reference to a type information instance</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/repeated(element:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>case</span><span class='decorator empty-token'> </span><span class='identifier'>repeated</span><span class='decorator'>(</span><span class='decorator'>element</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>)</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A repeated type (set or array), with <code>TypeInformation</code> elements</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/scalar(_:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>case</span><span class='decorator empty-token'> </span><span class='identifier'>scalar</span><span class='decorator'>(</span><span class='decorator'>PrimitiveType</span><span class='decorator'>)</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A scalar type</div>
+              </div>
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="row contenttable-section">
+        <div class="col section-title large-3 medium-3 small-12">
+          <h3 class="title">Initializers</h3>
+        </div>
+  
+        <div class="col section-content large-9 medium-9 small-12">
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/init(type:enumassociatedvalues:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='identifier'>init</span><span class='decorator'>(</span><span class='decorator'>type</span><span class='decorator'>: </span><span class='decorator'>Any</span><span class='decorator'>.Type, </span><span class='decorator'>enumAssociatedValues</span><span class='decorator'>: </span><span class='decorator'>EnumWithAssociatedValuesHandling</span><span class='decorator'>) </span><span class='decorator'>throws</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Initializes a type information instance from any type using <code>RuntimeBuilder</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/init(value:enumassociatedvalues:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='identifier'>init</span><span class='decorator'>(</span><span class='decorator'>value</span><span class='decorator'>: </span><span class='decorator'>Any</span><span class='decorator'>, </span><span class='decorator'>enumAssociatedValues</span><span class='decorator'>: </span><span class='decorator'>EnumWithAssociatedValuesHandling</span><span class='decorator'>) </span><span class='decorator'>throws</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Initializes a type information from Any instance using <code>RuntimeBuilder</code></div>
+              </div>
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="row contenttable-section">
+        <div class="col section-title large-3 medium-3 small-12">
+          <h3 class="title">Instance Properties</h3>
+        </div>
+  
+        <div class="col section-content large-9 medium-9 small-12">
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/asoptional.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>asOptional</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Wraps a type descriptor as an optional type. If already an optional, returns self</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/context.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>context</span><span class='decorator'>: </span><span class='decorator'>Context</span><span class='decorator'>?</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Retrieves the <code>Context</code> where parsed Metadata is stored of a <a href='../../../documentation/apodinitypeinformation/typeinformation/index.html'><code>TypeInformation</code></a> instance. Returns nil for cases of <a href='../../../documentation/apodinitypeinformation/typeinformation/index.html'><code>TypeInformation</code></a> which don’t expose Metadata declaration blocks.</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/dictionarykey.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>dictionaryKey</span><span class='decorator'>: </span><span class='decorator'>PrimitiveType</span><span class='decorator'>?</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns the dictionary key if <code>self</code> is <code>.dictionary</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/dictionaryvalue.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>dictionaryValue</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>?</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns the dictionary value type if <code>self</code> is <code>.dictionary</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/elementisenum.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>elementIsEnum</span><span class='decorator'>: </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicates whether the nested or top level element is an enum</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/elementisobject.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>elementIsObject</span><span class='decorator'>: </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicates whether the nested or top level element is an object</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/enumcases.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>enumCases</span><span class='decorator'>: [</span><span class='decorator'>EnumCase</span><span class='decorator'>]</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns enum cases if <code>self</code> is <code>.enum</code>, otherwise an empty array</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/enumtype.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>enumType</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>?</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">If the root type is enum, returns <code>self</code>, otherwise the nested types are searched recursively</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/isdictionary.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>isDictionary</span><span class='decorator'>: </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicates whether the root type is a dictionary</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/isenum.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>isEnum</span><span class='decorator'>: </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicates whether the root type is an enum</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/isenumorobject.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>isEnumOrObject</span><span class='decorator'>: </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicates whether the root type is an enum or an object</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/isobject.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>isObject</span><span class='decorator'>: </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicates whether the root type is an object</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/isoptional.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>isOptional</span><span class='decorator'>: </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicates whether the root type is an optional</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/isreferencable.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>isReferencable</span><span class='decorator'>: </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicates whether the nested or top level element is an enum or an object</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/isreference.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>isReference</span><span class='decorator'>: </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicates whether the root type is a reference</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/isrepeated.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>isRepeated</span><span class='decorator'>: </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicates whether the root type is a repeated type</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/isscalar.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>isScalar</span><span class='decorator'>: </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicates whether the root type is a scalar (primitive type)</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/nestedtypestring.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>nestedTypeString</span><span class='decorator'>: </span><span class='decorator'>String</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Nested type string of this type information This computed property results in a fatalError if called for a <code>.reference</code>.</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/objectproperties.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>objectProperties</span><span class='decorator'>: [</span><span class='decorator'>TypeProperty</span><span class='decorator'>]</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns object properties if <code>self</code> is <code>.object</code>, otherwise an empty array</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/objecttype.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>objectType</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>?</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">If the root type is an object, returns <code>self</code>, otherwise the nested types are searched recursively</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/rawvaluetype.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>rawValueType</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>?</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Return rawValueType type if <code>self</code> is enum and enum has a raw value type.</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/reference.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>reference</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>?</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns the nested reference if any. References can be stored inside repeated types, dictionaries, optionals, or at top level</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/referencekey.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>referenceKey</span><span class='decorator'>: </span><span class='decorator'>ReferenceKey</span><span class='decorator'>?</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns the referenceKey of an nested reference</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/roottype-swift.property.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>rootType</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>.</span><span class='decorator'>RootType</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">The root type of this <code>typeInformation</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/typename.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>typeName</span><span class='decorator'>: </span><span class='decorator'>TypeName</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">The typeName of this <code>typeInformation</code> results in fatal error if requested for a <code>.reference</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/typestring.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>typeString</span><span class='decorator'>: </span><span class='decorator'>String</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">String representation of the type in a <code>Swift</code> compliant way, e.g. <code>User</code>, <code>User?</code>, <code>[String: User]</code> or <code>[User]</code> This computed property results in a fatalError if called for a <code>.reference</code>.</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/unwrapped.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>var</span><span class='decorator empty-token'> </span><span class='identifier'>unwrapped</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Recursively unwraps the value of optional type if <code>self</code> is <code>.optional</code></div>
+              </div>
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="row contenttable-section">
+        <div class="col section-title large-3 medium-3 small-12">
+          <h3 class="title">Instance Methods</h3>
+        </div>
+  
+        <div class="col section-content large-9 medium-9 small-12">
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/alltypes().html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>allTypes</span><span class='decorator'>() -&gt; [</span><span class='decorator'>TypeInformation</span><span class='decorator'>]</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Recursively returns all types included in this <code>typeInformation</code>, e.g. primitive types, enums, objects and nested elements in repeated types, dictionaries and optionals</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/asreference().html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>asReference</span><span class='decorator'>() -&gt; </span><span class='decorator'>TypeInformation</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns a version of self as a reference</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/comparingroottype(with:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>comparingRootType</span><span class='decorator'>(</span><span class='decorator'>with</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>) -&gt; </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicate whether <code>self</code> has the same root type with other <code>typeInformation</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/contains(_:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>contains</span><span class='decorator'>(</span><span class='decorator'>TypeInformation</span><span class='decorator'>?) -&gt; </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns whether the typeInformation is contained in <code>allTypes()</code> of self</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/dictionaries().html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>dictionaries</span><span class='decorator'>() -&gt; [</span><span class='decorator'>TypeInformation</span><span class='decorator'>]</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns all distinct dictionaries in <code>allTypes()</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/enums().html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>enums</span><span class='decorator'>() -&gt; [</span><span class='decorator'>TypeInformation</span><span class='decorator'>]</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns all distinct enums in <code>allTypes()</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/filter(_:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>filter</span><span class='decorator'>(</span><span class='decorator'>KeyPath</span><span class='decorator'>&lt;</span><span class='decorator'>TypeInformation</span><span class='decorator'>, </span><span class='decorator'>Bool</span><span class='decorator'>&gt;) -&gt; [</span><span class='decorator'>TypeInformation</span><span class='decorator'>]</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Filters <code>allTypes()</code> by a boolean property of <code>TypeInformation</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/iscontained(in:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>isContained</span><span class='decorator'>(</span><span class='decorator'>in</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>) -&gt; </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns whether the <code>self</code> is contained in <code>allTypes()</code> of <code>typeInformation</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/objecttypes().html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>objectTypes</span><span class='decorator'>() -&gt; [</span><span class='decorator'>TypeInformation</span><span class='decorator'>]</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns all distinct objects in <code>allTypes()</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/optionals().html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>optionals</span><span class='decorator'>() -&gt; [</span><span class='decorator'>TypeInformation</span><span class='decorator'>]</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns all distinct optionals in <code>allTypes()</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/property(_:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>property</span><span class='decorator'>(</span><span class='decorator'>String</span><span class='decorator'>) -&gt; </span><span class='decorator'>TypeProperty</span><span class='decorator'>?</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns the property with name <code>named</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/referencedproperties().html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>referencedProperties</span><span class='decorator'>() -&gt; </span><span class='decorator'>TypeInformation</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">If a object, types of object properties are changed to references</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/repeatedtypes().html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>repeatedTypes</span><span class='decorator'>() -&gt; [</span><span class='decorator'>TypeInformation</span><span class='decorator'>]</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns all distinct repeated types in <code>allTypes()</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/sametype(with:).html" class="link deprecated has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>sameType</span><span class='decorator'>(</span><span class='decorator'>with</span><span class='decorator'>: </span><span class='decorator'>TypeInformation</span><span class='decorator'>) -&gt; </span><span class='decorator'>Bool</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Indicate whether <code>self</code> has the same root type with other <code>typeInformation</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/scalars().html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>scalars</span><span class='decorator'>() -&gt; [</span><span class='decorator'>TypeInformation</span><span class='decorator'>]</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns all distinct scalars in <code>allTypes()</code></div>
+              </div>
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="row contenttable-section">
+        <div class="col section-title large-3 medium-3 small-12">
+          <h3 class="title">Type Methods</h3>
+        </div>
+  
+        <div class="col section-content large-9 medium-9 small-12">
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/of(_:with:).html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>static</span><span class='decorator empty-token'> </span><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>of</span><span class='decorator'>&lt;</span><span class='decorator'>B</span><span class='decorator'>&gt;(</span><span class='decorator'>Any</span><span class='decorator'>.Type, </span><span class='decorator'>with</span><span class='decorator'>: </span><span class='decorator'>B</span><span class='decorator'>.Type) </span><span class='decorator'>throws</span><span class='decorator'> -&gt; </span><span class='decorator'>TypeInformation</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns a <code>TypeInformation</code> instance built with <code>builderType</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/reference(_:)-swift.type.method.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>static</span><span class='decorator empty-token'> </span><span class='decorator'>func</span><span class='decorator empty-token'> </span><span class='identifier'>reference</span><span class='decorator'>(</span><span class='decorator'>String</span><span class='decorator'>) -&gt; </span><span class='decorator'>TypeInformation</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Returns a reference with the given string key</div>
+              </div>
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="row contenttable-section">
+        <div class="col section-title large-3 medium-3 small-12">
+          <h3 class="title">Enumerations</h3>
+        </div>
+  
+        <div class="col section-content large-9 medium-9 small-12">
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/roottype-swift.enum/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>enum</span><span class='decorator empty-token'> </span><span class='identifier'>RootType</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A simplified enum of the <code>typeInformation</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/typeinformationerror/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>enum</span><span class='decorator empty-token'> </span><span class='identifier'>TypeInformationError</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Errors</div>
+              </div>
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="row contenttable-section">
+        <div class="col section-title large-3 medium-3 small-12">
+          <h3 class="title">Default Implementations</h3>
+        </div>
+  
+        <div class="col section-content large-9 medium-9 small-12">
+          
+            <div class="link-block topic">
+              
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/decodable-implementations.html" class="link has-adjacent-elements">
+                  <span class="topic-icon-wrapper">&nbsp;</span>
+                  Decodable Implementations
+                </a>
+              
+              <div class="abstract">
+                <div class="content"></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/encodable-implementations.html" class="link has-adjacent-elements">
+                  <span class="topic-icon-wrapper">&nbsp;</span>
+                  Encodable Implementations
+                </a>
+              
+              <div class="abstract">
+                <div class="content"></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/hashable-implementations.html" class="link has-adjacent-elements">
+                  <span class="topic-icon-wrapper">&nbsp;</span>
+                  Hashable Implementations
+                </a>
+              
+              <div class="abstract">
+                <div class="content"></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+              
+                <a href="../../../documentation/apodinitypeinformation/typeinformation/equatable-implementations.html" class="link has-adjacent-elements">
+                  <span class="topic-icon-wrapper">&nbsp;</span>
+                  Equatable Implementations
+                </a>
+              
+              <div class="abstract">
+                <div class="content"></div>
+              </div>
+            </div>
+          
+        </div>
+      </div>
+    
+  </div>
+</section>
+
+  
+</main>
+
+      </div>
+    </div>
+    <footer class="footer"></footer>
+    <script>hljs.highlightAll();</script>
+  </body>
+</html>

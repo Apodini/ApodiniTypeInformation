@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    
+    <title>ApodiniTypeInformation| Documentation</title>
+    
+    <link rel="icon"       href="../../favicon.ico" />
+    <link rel="mask-icon"  href="../../favicon.svg" color="#333333" />
+    <link rel='stylesheet' href='../../css/site.css' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/styles/default.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/highlight.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="doc-topic">
+        <nav role="navigation" class="nav documentation-nav">
+  <div class="nav__wrapper">
+    <div class="nav__background"></div>
+    <div class="nav-content">
+      <div class="nav-title">
+        <span class="nav-title-link inactive">Documentation</span>
+      </div>
+      <div class="nav-menu">
+        <div class="nav-menu-tray">
+          <ul class="nav-menu-items hierarchy">
+            
+              <li class="nav-menu-item hierarchy-item">
+                
+                  <span class="current item">ApodiniTypeInformation</span>
+                
+                
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main id="main" role="main" class="main">
+  <div class="topictitle">
+  <span class="eyebrow">Framework</span>
+  <h1 class="title">ApodiniTypeInformation</h1>
+</div>
+
+  <div class="container content-grid">
+  <div class="description">
+    <div class="abstract content">
+      A TypeInformation framework for all Apodini packages.
+    </div>
+  </div>
+  
+  <!-- The sidebar once we have one: <div class="summary"></div> -->
+  
+  <div class="primary-content">
+    <div class='content'><h2 id='Overview'>Overview</h2><p>This is an example for a <a href='https://developer.apple.com/documentation/docc' title='DocC'>DocC</a> documentation for the ApodiniTypeInformation package.</p></div>
+  </div>
+</div>
+
+  
+  <section id='topics' class='contenttable alt-light'>
+  <div class='container'>
+    <h2 class='title'>Topics</h2>
+
+    
+      <div class="row contenttable-section">
+        <div class="col section-title large-3 medium-3 small-12">
+          <h3 class="title">Protocols</h3>
+        </div>
+  
+        <div class="col section-content large-9 medium-9 small-12">
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/builder/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>protocol</span><span class='decorator empty-token'> </span><span class='identifier'>Builder</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A result builder protocol out of an input</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/defaultinitializable/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>protocol</span><span class='decorator empty-token'> </span><span class='identifier'>DefaultInitializable</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A protocol that forces the presence of an <code>init(_ default: Default)</code> initializer, where <code>Default</code> is an empty struct that can either be initialized with <code>.init()</code> or <code>.default</code> static variable.</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/typeinformationbuilder.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>protocol</span><span class='decorator empty-token'> </span><span class='identifier'>TypeInformationBuilder</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A builder protocol where <code>Result</code> is <code>TypeInformation</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/typeinformationdefaultconstructor/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>protocol</span><span class='decorator empty-token'> </span><span class='identifier'>TypeInformationDefaultConstructor</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A protocol for types that implement by default their type information representation</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/typeinformationelement.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>protocol</span><span class='decorator empty-token'> </span><span class='identifier'>TypeInformationElement</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A protocol that requires conformance to <code>Codable</code> and <code>Hashable</code> (also <code>Equatable</code>), that any api endpoints of the <code>ApodiniTypeInformation</code> conform to.</div>
+              </div>
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="row contenttable-section">
+        <div class="col section-title large-3 medium-3 small-12">
+          <h3 class="title">Structures</h3>
+        </div>
+  
+        <div class="col section-content large-9 medium-9 small-12">
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/default/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>struct</span><span class='decorator empty-token'> </span><span class='identifier'>Default</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content"><code>Default</code> is an empty struct that can either be initialized with <code>.init()</code> or <code>.default</code> static variable. It is used as a parameter in <code>DefaultInitializable</code> initializer to disambiguate it from the overload of default <code>.init()</code> initializers of most primitive values. The variable <code>default</code> is however not used within the initializer at all. The present of <code>Default</code> additionally serves the purpose to avoid <code>Self</code> in <code>DefaultInitializable</code>, and also for conforming Arrays, Dictionaries and Optionals to <code>DefaultInitializable</code> where the respective element, keys, values or wrapped conform to <code>DefaultInitializable</code> by ensuring to initializing them with one element. Check for conformance to <code>DefaultInitializable</code> is done on instance creation operations of empty properties of arrays, dictionaries and optionals, before passing to <code>createInstance</code> of Runtime</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/enumcase/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>struct</span><span class='decorator empty-token'> </span><span class='identifier'>EnumCase</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Represents a case of an enumeration</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/null/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>struct</span><span class='decorator empty-token'> </span><span class='identifier'>Null</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A similar to <code>NSNull</code> type that encodes <code>nil</code></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/referencekey/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>struct</span><span class='decorator empty-token'> </span><span class='identifier'>ReferenceKey</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">A <code>ReferenceKey</code> uniquely identifies a <code>TypeInformation</code> inside a <code>TypeStore</code> instance.</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/runtimebuilder/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>struct</span><span class='decorator empty-token'> </span><span class='identifier'>RuntimeBuilder</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content"></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/typename/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>struct</span><span class='decorator empty-token'> </span><span class='identifier'>TypeName</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">An object that represents names of the types</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/typenamecomponent/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>struct</span><span class='decorator empty-token'> </span><span class='identifier'>TypeNameComponent</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content"></div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/typeproperty/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>struct</span><span class='decorator empty-token'> </span><span class='identifier'>TypeProperty</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">An object that represents a property of an <code>.object</code> TypeInformation</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/typesstore/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>struct</span><span class='decorator empty-token'> </span><span class='identifier'>TypesStore</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content"><a href='../../documentation/apodinitypeinformation/typesstore/index.html'><code>TypesStore</code></a> provides logic to reference and store <a href='../../documentation/apodinitypeinformation/typeinformation/index.html'><code>TypeInformation</code></a> instances, while e.g. an endpoint keeps only the reference of the response type Provided with a reference from <code>TypeStore</code>, the instance of <a href='../../documentation/apodinitypeinformation/typeinformation/index.html'><code>TypeInformation</code></a> can be constructed without information-loss via <code>construct(from:)</code> The lifecycle of a <code>TypeStore</code> is limited only during encoding and decoding of <code>Document</code></div>
+              </div>
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="row contenttable-section">
+        <div class="col section-title large-3 medium-3 small-12">
+          <h3 class="title">Enumerations</h3>
+        </div>
+  
+        <div class="col section-content large-9 medium-9 small-12">
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/cardinality/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>enum</span><span class='decorator empty-token'> </span><span class='identifier'>Cardinality</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Represents different cardinalities of type</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/enumwithassociatedvalueshandling/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>enum</span><span class='decorator empty-token'> </span><span class='identifier'>EnumWithAssociatedValuesHandling</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">With this enum option you can control how Enum cases with associated values are handled in the TypeInformation representation.</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/fluentpropertytype/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>enum</span><span class='decorator empty-token'> </span><span class='identifier'>FluentPropertyType</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Represents distinct cases of FluentKit (version: 1.12.0) property wrappers</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/necessity/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>enum</span><span class='decorator empty-token'> </span><span class='identifier'>Necessity</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Represents distinct cases of necessities for parameters or properties of an object</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/primitivetype/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>enum</span><span class='decorator empty-token'> </span><span class='identifier'>PrimitiveType</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Represents different cases of primitive types</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/scalartype/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>enum</span><span class='decorator empty-token'> </span><span class='identifier'>ScalarType</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content">Represents distinct cases of scalar types (JSON values)</div>
+              </div>
+            </div>
+          
+            <div class="link-block topic">
+              
+                <a href="../../documentation/apodinitypeinformation/typeinformation/index.html" class="link has-adjacent-elements">
+                  <code class="decorated-title"><span class='decorator'>enum</span><span class='decorator empty-token'> </span><span class='identifier'>TypeInformation</span></code>
+                </a>
+              
+              
+              <div class="abstract">
+                <div class="content"></div>
+              </div>
+            </div>
+          
+        </div>
+      </div>
+    
+  </div>
+</section>
+
+  
+</main>
+
+      </div>
+    </div>
+    <footer class="footer"></footer>
+    <script>hljs.highlightAll();</script>
+  </body>
+</html>
