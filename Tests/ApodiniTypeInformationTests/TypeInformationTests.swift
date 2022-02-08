@@ -55,7 +55,7 @@ final class TypeInformationTests: TypeInformationTestCase {
         XCTAssert(user.contains(direction))
         XCTAssert(direction.isContained(in: user))
         XCTAssertEqual(direction.rawValueType, .scalar(.string))
-        
+
         XCTAssert(!user.comparingRootType(with: direction))
 
         let data = try user.toJSON()
@@ -203,5 +203,13 @@ final class TypeInformationTests: TypeInformationTestCase {
             XCTAssertEqual(type.enumCases.count, 2)
             XCTAssertEqual(type.rawValueType, .scalar(.string))
         }
+    }
+
+    func testEnumWithAssociatedValues() throws {
+        let typeInfo = try TypeInformation(type: TestTypes.EnumWithAssociatedValues.self, enumAssociatedValues: .ignore)
+
+        XCTAssert(typeInfo.isEnum)
+        XCTAssertEqual(typeInfo.rawValueType, .scalar(.string))
+        XCTAssertEqual(typeInfo.enumCases.count, 2)
     }
 }
