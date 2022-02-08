@@ -69,7 +69,7 @@ extension TypeInformation {
 
                 let cases: [EnumCase] = typeInfo
                     .cases
-                    .filter { (enumAssociatedValues == .ignore && $0.payloadType == nil ) }
+                    .filter { (enumAssociatedValues == .ignore ? $0.payloadType == nil : true) }
                     .map { EnumCase($0.name) }
 
                 self = .enum(name: typeInfo.typeName, rawValueType: rawValueType, cases: cases, context: context)
