@@ -55,6 +55,7 @@ final class TypeInformationTests: TypeInformationTestCase {
         XCTAssert(user.contains(direction))
         XCTAssert(direction.isContained(in: user))
         XCTAssertEqual(direction.rawValueType, .scalar(.string))
+        XCTAssertEqual(direction.enumCases.count, 2)
 
         XCTAssert(!user.comparingRootType(with: direction))
 
