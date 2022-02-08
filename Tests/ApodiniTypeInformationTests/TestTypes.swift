@@ -41,6 +41,34 @@ extension TestTypes {
         
         struct SomeInnerType {}
     }
+
+    enum EnumWithAssociatedValues: RawRepresentable, Codable, Hashable {
+        case one
+        case two
+        case three(String)
+
+        init(rawValue: String) {
+            switch rawValue {
+            case "one":
+                self = .one
+            case "two":
+                self = .two
+            default:
+                self = .three(rawValue)
+            }
+        }
+
+        var rawValue: String {
+            switch self {
+            case .one:
+                return "one"
+            case .two:
+                return "two"
+            case let .three(value):
+                return value
+            }
+        }
+    }
     
     struct Car: Codable, Equatable {
         let plateNumber: Int

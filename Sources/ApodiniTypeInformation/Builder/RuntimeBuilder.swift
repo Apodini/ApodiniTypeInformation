@@ -16,6 +16,6 @@ public struct RuntimeBuilder: TypeInformationBuilder {
     }
     
     public func build() throws -> TypeInformation {
-        try TypeInformation(type: input) // uses the current approach
+        try TypeInformation(type: input, enumAssociatedValues: .reject) // uses the current approach
     }
 }
