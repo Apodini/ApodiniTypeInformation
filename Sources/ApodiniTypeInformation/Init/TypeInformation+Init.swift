@@ -200,11 +200,6 @@ extension TypeInformation {
     }
 }
 
-//private struct RawEnumVisitor: RawRepresentableTypeVisitor {
-//    func callAsFunction<T: RawRepresentable>(_ type: T.Type) -> Any.Type {
-//        T.self.RawValue
-//    }
-//}
 
 extension RawRepresentable {
     fileprivate static var underlyingRawValueType: Any.Type {
