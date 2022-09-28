@@ -1,34 +1,32 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "MetadataSystem",
-        "repositoryURL": "https://github.com/Apodini/MetadataSystem.git",
-        "state": {
-          "branch": null,
-          "revision": "f655813f1953af8d3aaac432dad35f394e7bdf75",
-          "version": "0.1.6"
-        }
-      },
-      {
-        "package": "Runtime",
-        "repositoryURL": "https://github.com/wickwirew/Runtime.git",
-        "state": {
-          "branch": null,
-          "revision": "dad03135d7701a4e7b3a4051e75d6b37bd8e178e",
-          "version": "2.2.4"
-        }
-      },
-      {
-        "package": "swift-collections",
-        "repositoryURL": "https://github.com/apple/swift-collections.git",
-        "state": {
-          "branch": null,
-          "revision": "48254824bb4248676bf7ce56014ff57b142b77eb",
-          "version": "1.0.2"
-        }
+  "pins" : [
+    {
+      "identity" : "metadatasystem",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Apodini/MetadataSystem.git",
+      "state" : {
+        "revision" : "761c5dbaa9f53293b1109f81d469370b5f5f61e7",
+        "version" : "0.1.7"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "runtime",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/wickwirew/Runtime.git",
+      "state" : {
+        "revision" : "dad03135d7701a4e7b3a4051e75d6b37bd8e178e",
+        "version" : "2.2.4"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "48254824bb4248676bf7ce56014ff57b142b77eb",
+        "version" : "1.0.2"
+      }
+    }
+  ],
+  "version" : 2
 }
