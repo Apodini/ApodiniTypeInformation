@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.7
 
 //
 // This source file is part of the Apodini open source project
@@ -39,7 +39,7 @@ let package = Package(
     ],
     dependencies: [
         runtimeDependency(selecting: .standard),
-        .package(url: "https://github.com/Apodini/MetadataSystem.git", .upToNextMinor(from: "0.1.4"))
+        .package(url: "https://github.com/Apodini/MetadataSystem.git", .upToNextMinor(from: "0.1.7"))
     ],
     targets: [
         .target(

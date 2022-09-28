@@ -8,7 +8,6 @@
 
 import Foundation
 import TypeInformationMetadata
-@_implementationOnly import AssociatedTypeRequirementsVisitor
 
 /// With this enum option you can control how Enum cases with associated values are handled in the TypeInformation representation.
 public enum EnumWithAssociatedValuesHandling {
@@ -59,8 +58,8 @@ extension TypeInformation {
                 }
 
                 let rawValueType: TypeInformation?
-                if let rawValue = RawEnumVisitor()(type) {
-                    rawValueType = try .init(for: rawValue, enumAssociatedValues: enumAssociatedValues)
+                if let rawRepresentableTy = type as? any RawRepresentable.Type {
+                    rawValueType = try .init(for: rawRepresentableTy.underlyingRawValueType, enumAssociatedValues: enumAssociatedValues)
                 } else {
                     rawValueType = nil
                 }
@@ -201,8 +200,9 @@ extension TypeInformation {
     }
 }
 
-private struct RawEnumVisitor: RawRepresentableTypeVisitor {
-    func callAsFunction<T: RawRepresentable>(_ type: T.Type) -> Any.Type {
-        T.self.RawValue
+
+extension RawRepresentable {
+    fileprivate static var underlyingRawValueType: Any.Type {
+        Self.RawValue.self
     }
 }
